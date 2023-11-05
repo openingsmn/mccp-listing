@@ -1,0 +1,64 @@
+.AppForm {
+    background-color: rgb(184 0 111 / 32%);
+    color: black;
+    /* border: 1px solid rgb(168, 96, 250); */
+    /* margin: auto; */
+    padding: 0.5vw;
+    border-radius: 2px;
+    height: -moz-fit-content;
+    height: 900px;
+    text-shadow: 1px 1px 3px white;
+    display: grid;
+    justify-content: center;
+    align-items: end;
+}
+.p-1.text-bg-light{
+    background-color: rgb(184 0 111 / 32%) !important;
+
+}
+.choosen{
+    border-color: aquamarine;
+}
+
+.phoneClass{
+    width: 35.38vw !important;
+}
+
+@media (max-width: 900px) {
+    .phoneClass{
+        width: 73.4vw !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .phoneClass{
+        width: 68vw !important;
+    }
+}
+button.formbutton.btn.btn-primary {
+    color: white !important;
+}button.choicesbuttons.btn.btn-primary {
+    color: white !important;
+}
+.formbutton {
+    cursor: pointer; 
+     background-color: #bb006e;
+    width: fit-content;
+    color: white !important;
+    padding: 5px 10%;
+    margin: auto;
+}
+
+.formbody {
+    border-top: 1px solid;
+    width: 80%;
+    margin: auto;
+}
+
+.white{
+    color:white;
+}
+
+.star{
+    font-size: x-large;
+}

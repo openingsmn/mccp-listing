@@ -1,67 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Listing {
   id                  String       @id @default(uuid())
-  waiverType          String       @db.Text
-  waiverTypeSpecific  String       @db.Text
-  timeframe           String       @db.Text
-  housingType         String       @db.MediumText
-  fullName            String       @db.Text
+  waiverType          String //@db.Text
+  waiverTypeSpecific  String //@db.Text
+  timeframe           String //@db.Text
+  housingType         String //@db.MediumText
+  fullName            String //@db.Text
   dateOfBirth         DateTime
-  pmiNumber           String       @db.Text
-  phone               String?      @db.Text
-  email               String?      @db.Text
-  relegiousPref       String?      @db.MediumText
-  gender              String?      @db.Text
-  race                String?      @db.Text
-  equipementsNeeded   String       @db.MediumText
-  guardianStatus      String       @db.Text
-  livingSituation     String       @db.Text
+  pmiNumber           String //@db.Text
+  phone               String? //@db.Text
+  email               String? //@db.Text
+  relegiousPref       String? //@db.MediumText
+  gender              String? //@db.Text
+  race                String? //@db.Text
+  equipementsNeeded   String //@db.MediumText
+  guardianStatus      String //@db.Text
+  livingSituation     String //@db.Text
   mobility            Mobility?
   teamContact         TeamContact?
   address             Address?
-  residentialOpenings String       @db.LongText
+  residentialOpenings String //@db.LongText
 }
 
 model Address {
   id          String  @id @default(uuid())
-  fullAddress String  @db.LongText
-  city        String  @db.Text
-  postalCode  String  @db.Text
+  fullAddress String //@db.LongText
+  city        String //@db.Text
+  postalCode  String //@db.Text
   listinId    String  @unique
   listing     Listing @relation(fields: [listinId], references: [id])
 }
 
 model Mobility {
-  id                  String   @id @default(uuid())
-  mobilityConcers     Boolean?
-  usedMobilityDevices String?  @db.Text
-  adjustWithOneFloor  Boolean?
-  listinId            String   @unique
-  listing             Listing  @relation(fields: [listinId], references: [id])
+  id                  String  @id @default(uuid())
+  mobilityConcers     String
+  usedMobilityDevices String? //@db.Text
+  adjustWithOneFloor  String?
+  listinId            String  @unique
+  listing             Listing @relation(fields: [listinId], references: [id])
 }
 
 model TeamContact {
-  id                  String  @id @default(uuid())
-  caseManager         String  @db.MediumText
-  referrer            String? @db.MediumText
-  legalRepresentative String? @db.MediumText
+  id                  String           @id @default(uuid())
+  caseManager         String //@db.MediumText
+  referrer            String? //@db.MediumText
+  legalRepresentative String? //@db.MediumText
   assessmentData      String?
   signature           String?
-  listinId            String  @unique
-  listing             Listing @relation(fields: [listinId], references: [id])
+  listinId            String           @unique
+  listing             Listing          @relation(fields: [listinId], references: [id])
+  assessmentFiles     AssessmentFile[]
+}
+
+model AssessmentFile {
+  id        String      @id @default(uuid())
+  publicUrl String
+  localUrl  String
+  contactId String
+  contact   TeamContact @relation(fields: [contactId], references: [id])
 }

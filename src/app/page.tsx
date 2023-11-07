@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import postListingAction from "@/server/actions/postListing";
+import Spinner from "@/components/spinner";
 
 export default function Home() {
   const form = useForm<PostListingSchema>({
@@ -48,6 +49,7 @@ export default function Home() {
       },
       assessmentData
     );
+    if (res) window.location.reload();
   };
   return (
     <main className="max-w-3xl mx-auto p-10">
@@ -563,8 +565,13 @@ export default function Home() {
             </div>
           </div>
           {/* Team Contact Section End  */}
-          <div>
-            <Button type="submit">Submit</Button>
+          <div className="flex items-center justify-end">
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting || !form.formState.isValid}
+            >
+              {form.formState.isSubmitting ? <Spinner /> : <span>Submit</span>}
+            </Button>
           </div>
         </form>
       </Form>

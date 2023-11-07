@@ -33,19 +33,19 @@ type RouteParams<
   handler: (ctx: IRequestContext<TBody>) => z.infer<TResp>;
 };
 
-const validateRequest = async (req: Request, validate: IRequestValidation) => {
+const validateRequest = async (reqBody: any, validate: IRequestValidation) => {
   try {
     if (validate.body) {
-      return (await validate.body.safeParseAsync(req.body)).success;
+      return (await validate.body.safeParseAsync(reqBody)).success;
     }
     if (validate.params) {
-      return (await validate.params.safeParseAsync(req.body)).success;
+      return (await validate.params.safeParseAsync(reqBody)).success;
     }
     if (validate.query) {
-      return (await validate.query.safeParseAsync(req.body)).success;
+      return (await validate.query.safeParseAsync(reqBody)).success;
     }
     if (validate.response) {
-      return (await validate.response.safeParseAsync(req.body)).success;
+      return (await validate.response.safeParseAsync(reqBody)).success;
     }
   } catch (error) {
     console.log(error);
@@ -59,9 +59,15 @@ export function createRouteHandler<
   TQuery extends ZodSchema<any, any>,
   TResp extends ZodSchema<any, any>
 >({ validate, handler }: RouteParams<TBody, TParams, TQuery, TResp>) {
-  return function (req: NextRequest) {
+  return async function (req: NextRequest) {
+    const formData = await req.formData();
+    const reqBody: Record<string, any> = {};
+    formData.forEach(function (value, key) {
+      reqBody[key] = value;
+    });
+    // console.log("Req Bod: ", reqBody);
     if (validate) {
-      const bodyValid = validateRequest(req, validate);
+      const bodyValid = validateRequest(reqBody, validate);
       if (!bodyValid) {
         return {
           succeed: false,
@@ -71,7 +77,7 @@ export function createRouteHandler<
     }
     try {
       const requestContext: IRequestContext<TBody> = {
-        body: req.body,
+        body: reqBody,
       };
       const response = handler(requestContext);
       return NextResponse.json(response);

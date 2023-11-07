@@ -6,6 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function converFileToB64(file: File): Promise<string | undefined> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result?.toString());
+    reader.onerror = reject;
+  });
+}
+
 export const resizeImage = (file: File, maxWidth = 512, maxHeight = 512) =>
   new Promise<string | null>((resolve) => {
     try {

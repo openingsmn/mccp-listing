@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type === "password" ? (pwdVisble ? "text" : "password") : type}
           className={cn(
-            "flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           ref={ref}
@@ -43,8 +43,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input";
 
 type FileInputProps = InputProps & {
-  onFileChange?: (value: string | null) => void;
-  file?: File;
+  onFileChange?: (value: File[]) => void;
+  file?: File[];
 };
 
 const FileInput = ({
@@ -54,6 +54,7 @@ const FileInput = ({
   file,
   children,
   required,
+  multiple,
   readOnly,
   disabled,
 }: FileInputProps) => {
@@ -70,16 +71,19 @@ const FileInput = ({
         accept="image/*"
         className="hidden"
         hidden
+        multiple={multiple}
         // required={required}
         readOnly={readOnly}
         disabled={disabled}
         onChange={async (e) => {
           const files = e.target.files;
-          const file = files?.item(0);
-          if (file) {
-            const imageB64 = await resizeImage(file);
-            onFileChange?.(imageB64);
-          }
+          if (!files) return;
+          onFileChange?.(Array.from(files));
+          // const file = files?.item(0);
+          // if (file) {
+          //   const imageB64 = await resizeImage(file);
+          //   onFileChange?.(imageB64);
+          // }
         }}
       />
       {children}

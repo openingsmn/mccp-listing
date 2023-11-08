@@ -105,7 +105,7 @@ export function BaseTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="w-full border rounded-t">
       {showToolbar && (
         <DataTableToolbar
           table={table}
@@ -114,7 +114,7 @@ export function BaseTable<TData, TValue>({
           setFilterValue={setGlobalFilter}
         />
       )}
-      <div className="rounded border">
+      <div className="border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

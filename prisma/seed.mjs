@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { housingProfilesData } from "./housing-profiles";
+import { housingProfilesData } from "./housing-profiles.mjs";
 
 async function main() {
   const db = new PrismaClient();
@@ -27,4 +27,4 @@ async function main() {
   });
 }
 
-await main();
+await main().then(() => console.log("Seeding done"));

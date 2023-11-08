@@ -13,8 +13,11 @@
 /.next/
 /out/
 
+src/frontend
+
 # production
 /build
+/frontend-build
 
 # misc
 .DS_Store

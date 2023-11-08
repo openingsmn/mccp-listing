@@ -5,15 +5,16 @@ import { z } from "zod";
 const listingFiltersSchema = z.object({
   page: z
     .string()
-    .transform((value) => Number(value))
     .optional()
-    .default("10"),
+    .default("10")
+    .transform((value) => Number(value)),
   perPage: z
     .string()
-    .transform((value) => Number(value))
     .optional()
-    .default("10"),
+    .default("10")
+    .transform((value) => Number(value)),
   city: z.string().optional(),
+  state: z.string().optional(),
   housingType: z.array(z.string()).optional(),
   fundingType: z.array(z.string()).optional(),
   beds: z.string().optional(),
@@ -37,6 +38,7 @@ export const GET = createRouteHandler({
     query: listingFiltersSchema,
   },
   handler: async ({ query }) => {
+    console.log(query);
     try {
       const {
         page,
@@ -44,6 +46,7 @@ export const GET = createRouteHandler({
         beds,
         bedroomLocation,
         age,
+        state,
         challengingBehaviours,
         city,
         fundingType,
@@ -60,11 +63,7 @@ export const GET = createRouteHandler({
         where: {
           city: city,
           ...(beds && {
-            beds: {
-              ...(beds.endsWith("+")
-                ? { gte: Number(beds.replace("+", "")) }
-                : { equals: Number(beds) }),
-            },
+            beds: beds,
           }),
           ...(housingType && {
             housingType: {
@@ -81,9 +80,12 @@ export const GET = createRouteHandler({
               in: bedroomLocation,
             },
           }),
-          ...(bedroomLocation && {
-            bedroomLocation: {
-              in: bedroomLocation,
+          ...(state && {
+            state: state,
+          }),
+          ...(challengingBehaviours && {
+            challengingBehaviors: {
+              in: challengingBehaviours,
             },
           }),
         },
@@ -95,6 +97,7 @@ export const GET = createRouteHandler({
           skip: page <= 1 ? 0 : (page - 1) * perPage,
         }),
       });
+      console.log(profiles.length);
       const totalCount = await db.housingProfile.count({});
       return {
         succeed: true,

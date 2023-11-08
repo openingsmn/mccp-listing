@@ -2,16 +2,38 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model Listing {
+model HousingProfile {
+  id                     Int      @id @default(autoincrement())
+  bedroomLocation        String   @db.Text
+  beds                   String   @db.Text
+  nursingSupport         String   @db.Text
+  overnightSupervison    String   @db.Text
+  phone                  String   @db.Text
+  physicalAccommodations String   @db.MediumText
+  housingType            String   @db.Text
+  fundingType            String   @db.Text
+  intellectualDisability String?  @db.Text
+  staffingPattern        String   @db.Text
+  challengingBehaviors   String   @db.Text
+  providerId             Int      @db.Int
+  provider               String   @db.Text
+  state                  String   @db.Text
+  address                String   @db.LongText
+  city                   String   @db.Text
+  createdAt              DateTime @default(now())
+  updateAt               DateTime @default(now()) @updatedAt
+}
+
+model ListingSubmission {
   id                  String             @id @default(uuid())
   waiverType          String             @db.Text
   waiverTypeSpecific  String             @db.Text
@@ -35,43 +57,44 @@ model Listing {
 }
 
 model ResidntialOpening {
-  id                         String  @id @default(uuid())
+  id                         String            @id @default(uuid())
   accessible55P              String?
   notAccessible55P           String?
   accessible18P              String?
   notAccessible18P           String?
   notAccessible18PFemaleOnly String?
-  listinId                   String  @unique
-  listing                    Listing @relation(fields: [listinId], references: [id])
+  submissionId               String            @unique
+  submission                 ListingSubmission @relation(fields: [submissionId], references: [id])
 }
 
 model Address {
-  id          String  @id @default(uuid())
-  fullAddress String  @db.LongText
-  city        String  @db.Text
-  postalCode  String  @db.Text
-  listinId    String  @unique
-  listing     Listing @relation(fields: [listinId], references: [id])
+  id           String            @id @default(uuid())
+  fullAddress  String            @db.LongText
+  city         String?           @db.Text
+  postalCode   String?           @db.Text
+  state        String?           @db.Text
+  submissionId String            @unique
+  submission   ListingSubmission @relation(fields: [submissionId], references: [id])
 }
 
 model Mobility {
-  id                  String  @id @default(uuid())
+  id                  String            @id @default(uuid())
   mobilityConcers     String
-  usedMobilityDevices String? @db.Text
+  usedMobilityDevices String?           @db.Text
   adjustWithOneFloor  String?
-  listinId            String  @unique
-  listing             Listing @relation(fields: [listinId], references: [id])
+  submissionId        String            @unique
+  submission          ListingSubmission @relation(fields: [submissionId], references: [id])
 }
 
 model TeamContact {
-  id                  String           @id @default(uuid())
-  caseManager         String           @db.MediumText
-  referrer            String?          @db.MediumText
-  legalRepresentative String?          @db.MediumText
+  id                  String            @id @default(uuid())
+  caseManager         String            @db.MediumText
+  referrer            String?           @db.MediumText
+  legalRepresentative String?           @db.MediumText
   assessmentData      String?
   signature           String?
-  listinId            String           @unique
-  listing             Listing          @relation(fields: [listinId], references: [id])
+  submissionId        String            @unique
+  submission          ListingSubmission @relation(fields: [submissionId], references: [id])
   assessmentFiles     AssessmentFile[]
 }
 

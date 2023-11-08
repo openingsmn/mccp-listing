@@ -1,18 +1,23 @@
-import { Address, Listing, Mobility, TeamContact } from "@prisma/client";
+import {
+  Address,
+  ListingSubmission,
+  Mobility,
+  TeamContact,
+} from "@prisma/client";
 
 type ITeamContact = TeamContact & {
   assessmentFiles?: AssessmentFile[];
-  listing?: IListing[];
+  listing?: IListingSubmission[];
 };
 
 type IAddress = Address & {
-  listing?: IListing[];
+  listing?: IListingSubmission[];
 };
 type IMobility = Mobility & {
-  listing?: IListing[];
+  listing?: IListingSubmission[];
 };
 
-type IListing = Listing & {
+type IListingSubmission = ListingSubmission & {
   address?: IAddress;
   mobility?: IMobility;
   teamContact?: ITeamContact;

@@ -14,24 +14,24 @@ import formConfig from "@/config/form.cfg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  PostListingSchema,
-  postListingSchema,
+  listingSubmissionSchema,
+  type ListingSubmissionSchema,
 } from "@/shared/validation/listing.z";
 import { SelectEl } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
-import addNewListing, {
-  uploadListingFiles,
-} from "@/server/actions/postListing";
+import addListingSubmission, {
+  uploadListingSubmissionFiles,
+} from "@/server/actions/listing-submission";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const form = useForm<PostListingSchema>({
-    resolver: zodResolver(postListingSchema),
+  const form = useForm<ListingSubmissionSchema>({
+    resolver: zodResolver(listingSubmissionSchema),
     mode: "all",
     shouldFocusError: true,
   });
@@ -41,7 +41,7 @@ export default function Home() {
   const mobilityConcers =
     form.getValues("mobility.mobilityConcers")?.toLowerCase() === "yes";
 
-  const handleSubmit = async (values: PostListingSchema) => {
+  const handleSubmit = async (values: ListingSubmissionSchema) => {
     // Validating if mobilityConcerns is "Yes" so it's related fields are required
     if (mobilityConcers) {
       const mobilityDevicesValue = form.getValues(
@@ -78,7 +78,7 @@ export default function Home() {
       );
     }
     console.log(values.teamContact.assessmentData);
-    const listing = await addNewListing({
+    const listing = await addListingSubmission({
       ...values,
       teamContact: {
         ...values.teamContact,
@@ -92,7 +92,11 @@ export default function Home() {
           "Got some error while processing your request. Please try again.",
       });
     }
-    const filesSaved = await uploadListingFiles(listing.id, listingFiles);
+    console.log(Object.entries(listingFiles));
+    const filesSaved = await uploadListingSubmissionFiles(
+      listing.id,
+      listingFiles
+    );
     if (!filesSaved) {
       return toast({
         variant: "destructive",

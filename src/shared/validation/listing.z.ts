@@ -43,7 +43,7 @@ const teamContactSchema = z.object({
   signature: z.string({ required_error: "Field Required!" }).optional(),
 });
 
-export const postListingSchema = z.object({
+export const listingSubmissionSchema = z.object({
   waiverType: z.object({
     general: z.string({ required_error: "Field Required!" }),
     specific: z.string({ required_error: "Field Required!" }),
@@ -76,4 +76,4 @@ export const postListingSchema = z.object({
   residentialOpenings: residentialOpeningsSchema.optional(),
 });
 
-export type PostListingSchema = z.infer<typeof postListingSchema>;
+export type ListingSubmissionSchema = z.infer<typeof listingSubmissionSchema>;

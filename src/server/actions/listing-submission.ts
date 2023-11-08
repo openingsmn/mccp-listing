@@ -1,18 +1,16 @@
 "use server";
-
-import { PostListingSchema } from "@/shared/validation/listing.z";
+import { ListingSubmissionSchema } from "@/shared/validation/listing.z";
 import db from "../db";
-import { sendListingEmail } from "../mailer";
-import { IListing } from "@/typing/db";
 import { saveFileToLocal } from "../files-handler";
-import { RedirectType, redirect } from "next/navigation";
 
 const SITE_URL = process.env.SITE_URL ?? "";
 
-export default async function addNewListing(data: PostListingSchema) {
+export default async function addListingSubmission(
+  data: ListingSubmissionSchema
+) {
   try {
     // Saving Data into Database
-    const listing = await db.listing.create({
+    const submissionData = await db.listingSubmission.create({
       data: {
         email: data.email,
         fullName: data.fullName,
@@ -48,7 +46,7 @@ export default async function addNewListing(data: PostListingSchema) {
               },
             },
           }),
-        residentialOpenings: JSON.stringify({}),
+        // residentialOpenings: JSON.stringify({}),
         teamContact: {
           create: {
             assessmentData: "",
@@ -70,14 +68,17 @@ export default async function addNewListing(data: PostListingSchema) {
       },
     });
     // Sending Email to user who submitted form
-    await sendListingEmail(listing as IListing);
-    return listing;
+    // await sendListingEmail(submissionData as IListingSubmission);
+    return submissionData;
   } catch (error) {
     return null;
   }
 }
 
-export async function uploadListingFiles(listingId: string, data: FormData) {
+export async function uploadListingSubmissionFiles(
+  listingId: string,
+  data: FormData
+) {
   // Saving Assessment Atachements
   try {
     const assessmentFiles =
@@ -94,7 +95,7 @@ export async function uploadListingFiles(listingId: string, data: FormData) {
     if (savedAssFiles.length > 0) {
       const listing = await db.teamContact.update({
         where: {
-          listinId: listingId,
+          submissionId: listingId,
         },
         data: {
           assessmentFiles: {

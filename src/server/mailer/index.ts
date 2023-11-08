@@ -1,7 +1,6 @@
-import { Listing } from "@prisma/client";
 import nodemailer from "nodemailer";
 import generateEmailTemplate from "./template";
-import { IListing } from "@/typing/db";
+import { IListingSubmission } from "@/typing/db";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -13,7 +12,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendListingEmail(
-  listing: IListing
+  listing: IListingSubmission
 ): Promise<boolean> {
   if (!listing.email) return false;
   try {
@@ -33,11 +32,11 @@ export async function sendListingEmail(
 }
 
 // import Queue from "bee-queue";
-// import { IListing } from "@/typing/db";
+// import { IListingSubmission } from "@/typing/db";
 // const mailerQueue = new Queue<MailerJobData>("listing-mailer", {});
 
 // export type MailerJobData = {
-//   listing: IListing;
+//   listing: IListingSubmission;
 // };
 
 // mailerQueue.on("ready", () => {
@@ -46,6 +45,6 @@ export async function sendListingEmail(
 //   });
 // });
 
-// export async function sendListingEmailAsync(listing: IListing) {
+// export async function sendListingEmailAsync(listing: IListingSubmission) {
 //   await mailerQueue.createJob({ listing }).setId(listing.id).save();
 // }

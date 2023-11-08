@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model HousingType {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model BedroomLocation {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model FundingType {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model IntellectualDisability {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model StaffingPattern {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model ChallengingBehaviors {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model HousingProvider {
+  id              Int              @id @default(autoincrement())
+  name            String           @db.Text
+  housingProfiles HousingProfile[]
+}
+
+model City {
+  id        Int              @id @default(autoincrement())
+  name      String           @db.Text
+  addresses HousingAddress[]
+}
+
+model HousingAddress {
+  id                Int            @id @default(autoincrement())
+  name              String         @db.Text
+  fullAddress       String         @db.LongText
+  state             String         @db.Text
+  city              City           @relation(fields: [cityId], references: [id])
+  cityId            Int
+  housingProfiles   HousingProfile @relation(fields: [housingProfilesId], references: [id])
+  housingProfilesId Int            @unique
+}
+
+enum BedroomPrivacy {
+  PRIVATE
+  SHARED
+}
+
+enum NursingSupport {
+  ON_SITE
+  ON_CALL
+  WEEKLY_VISIT
+}
+
+model HousingProfile {
+  id                       Int                    @id @default(autoincrement())
+  privacy                  BedroomPrivacy
+  beds                     Int                    @db.Int
+  nursingSupport           String                 @db.Text
+  overnightSupervison      String                 @db.Text
+  phone                    String                 @db.Text
+  physicalAccommodations   String                 @db.MediumText
+  housingTypeId            Int
+  housingType              HousingType            @relation(fields: [housingTypeId], references: [id])
+  fundingTypeId            Int
+  fundingType              FundingType            @relation(fields: [fundingTypeId], references: [id])
+  intellectualDisabilityId Int
+  intellectualDisability   IntellectualDisability @relation(fields: [intellectualDisabilityId], references: [id])
+  createdAt                DateTime               @default(now())
+  updateAt                 DateTime               @default(now()) @updatedAt
+  staffingPattern          StaffingPattern        @relation(fields: [staffingPatternId], references: [id])
+  staffingPatternId        Int
+  challengingBehaviors     ChallengingBehaviors   @relation(fields: [challengingBehaviorsId], references: [id])
+  challengingBehaviorsId   Int
+  provider                 HousingProvider        @relation(fields: [providerId], references: [id])
+  providerId               Int
+  address                  HousingAddress?
+  bedroomLocation          BedroomLocation        @relation(fields: [bedroomLocationId], references: [id])
+  bedroomLocationId        Int
+}
+
+model ListingSubmission {
+  id                  String             @id @default(uuid())
+  waiverType          String             @db.Text
+  waiverTypeSpecific  String             @db.Text
+  timeframe           String             @db.Text
+  housingType         String             @db.MediumText
+  fullName            String             @db.Text
+  dateOfBirth         DateTime
+  pmiNumber           String             @db.Text
+  phone               String?            @db.Text
+  email               String?            @db.Text
+  relegiousPref       String?            @db.MediumText
+  gender              String?            @db.Text
+  race                String?            @db.Text
+  equipementsNeeded   String             @db.MediumText
+  guardianStatus      String             @db.Text
+  livingSituation     String             @db.Text
+  mobility            Mobility?
+  teamContact         TeamContact?
+  address             Address?
+  residentialOpenings ResidntialOpening?
+}
+
+model ResidntialOpening {
+  id                         String            @id @default(uuid())
+  accessible55P              String?
+  notAccessible55P           String?
+  accessible18P              String?
+  notAccessible18P           String?
+  notAccessible18PFemaleOnly String?
+  submissionId               String            @unique
+  submission                 ListingSubmission @relation(fields: [submissionId], references: [id])
+}
+
+model Address {
+  id           String            @id @default(uuid())
+  fullAddress  String            @db.LongText
+  city         String?           @db.Text
+  postalCode   String?           @db.Text
+  state        String?           @db.Text
+  submissionId String            @unique
+  submission   ListingSubmission @relation(fields: [submissionId], references: [id])
+}
+
+model Mobility {
+  id                  String            @id @default(uuid())
+  mobilityConcers     String
+  usedMobilityDevices String?           @db.Text
+  adjustWithOneFloor  String?
+  submissionId        String            @unique
+  submission          ListingSubmission @relation(fields: [submissionId], references: [id])
+}
+
+model TeamContact {
+  id                  String            @id @default(uuid())
+  caseManager         String            @db.MediumText
+  referrer            String?           @db.MediumText
+  legalRepresentative String?           @db.MediumText
+  assessmentData      String?
+  signature           String?
+  submissionId        String            @unique
+  submission          ListingSubmission @relation(fields: [submissionId], references: [id])
+  assessmentFiles     AssessmentFile[]
+}
+
+model AssessmentFile {
+  id        String      @id @default(uuid())
+  publicUrl String
+  localUrl  String
+  contactId String
+  contact   TeamContact @relation(fields: [contactId], references: [id])
+}

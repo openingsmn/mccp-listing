@@ -1,7 +1,7 @@
-import { IListing } from "@/typing/db";
+import { IListingSubmission } from "@/typing/db";
 import { format } from "date-fns";
 
-export default function generateEmailTemplate(listing: IListing): string {
+export default function generateEmailTemplate(listing: IListingSubmission): string {
   return /* HTML */ `
     <!DOCTYPE html>
     <html lang="en">

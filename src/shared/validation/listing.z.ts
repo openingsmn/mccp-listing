@@ -1,6 +1,23 @@
 import { z } from "zod";
 import { File } from "@web-std/file";
 
+const residentialOpeningsSchema = z.object({
+  accessible55P: z
+    .array(z.string({ required_error: "Field Required!" }))
+    .optional(),
+  notAccessible55P: z
+    .array(z.string({ required_error: "Field Required!" }))
+    .optional(),
+  accessible18P: z
+    .array(z.string({ required_error: "Field Required!" }))
+    .optional(),
+  notAccessible18P: z
+    .array(z.string({ required_error: "Field Required!" }))
+    .optional(),
+  notAccessible18PFemaleOnly: z
+    .array(z.string({ required_error: "Field Required!" }))
+    .optional(),
+});
 const addressSchema = z.object({
   fullAddress: z.string({ required_error: "Field Required!" }),
   city: z.string({ required_error: "Field Required!" }),
@@ -56,6 +73,7 @@ export const postListingSchema = z.object({
   livingSituation: z.string({ required_error: "Field Required!" }),
   mobility: mobilitySchema,
   teamContact: teamContactSchema,
+  residentialOpenings: residentialOpeningsSchema.optional(),
 });
 
 export type PostListingSchema = z.infer<typeof postListingSchema>;

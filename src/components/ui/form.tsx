@@ -184,8 +184,9 @@ type FormCalendarProps = {
 };
 
 const FormCalendar = ({ value, onChange }: FormCalendarProps) => {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -202,7 +203,10 @@ const FormCalendar = ({ value, onChange }: FormCalendarProps) => {
         <Calendar
           mode="single"
           selected={value}
-          onSelect={onChange}
+          onSelect={(value) => {
+            onChange?.(value);
+            setOpen(false);
+          }}
           initialFocus
         />
       </PopoverContent>

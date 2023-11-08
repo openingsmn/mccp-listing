@@ -4,22 +4,13 @@ import { PostListingSchema } from "@/shared/validation/listing.z";
 import db from "../db";
 import { sendListingEmail } from "../mailer";
 import { IListing } from "@/typing/db";
+import { saveFileToLocal } from "../files-handler";
+import { RedirectType, redirect } from "next/navigation";
 
-export default async function postListingAction(
-  data: PostListingSchema,
-  formData: FormData
-) {
+const SITE_URL = process.env.SITE_URL ?? "";
+
+export default async function addNewListing(data: PostListingSchema) {
   try {
-    // Saving Assessment Atachements
-    // const files = (formData.getAll("files") as File[] | undefined) ?? [];
-    // const assessmentFiles: Array<string> = [];
-    // await Promise.all(
-    //   files.map(async (file) => {
-    //     const filePath = await saveFile("assessments", file);
-    //     if (filePath) assessmentFiles.push(filePath);
-    //     return filePath;
-    //   })
-    // );
     // Saving Data into Database
     const listing = await db.listing.create({
       data: {
@@ -83,5 +74,45 @@ export default async function postListingAction(
     return listing;
   } catch (error) {
     return null;
+  }
+}
+
+export async function uploadListingFiles(listingId: string, data: FormData) {
+  // Saving Assessment Atachements
+  try {
+    const assessmentFiles =
+      (data.getAll("assessments") as File[] | undefined) ?? [];
+    const savedAssFiles: Array<string> = [];
+    await Promise.all(
+      assessmentFiles.map(async (file) => {
+        const filePath = await saveFileToLocal("assessments", file, listingId);
+        if (filePath) savedAssFiles.push(filePath);
+        return filePath;
+      })
+    );
+    console.log(savedAssFiles);
+    if (savedAssFiles.length > 0) {
+      const listing = await db.teamContact.update({
+        where: {
+          listinId: listingId,
+        },
+        data: {
+          assessmentFiles: {
+            createMany: {
+              skipDuplicates: true,
+              data: savedAssFiles.map((filePath) => ({
+                localUrl: filePath,
+                publicUrl: `${SITE_URL}/${filePath}`,
+              })),
+            },
+          },
+        },
+      });
+      console.log(listing);
+    }
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
 }

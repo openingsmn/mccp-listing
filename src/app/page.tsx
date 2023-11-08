@@ -21,44 +21,92 @@ import { SelectEl } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import postListingAction from "@/server/actions/postListing";
 import Spinner from "@/components/spinner";
+import addNewListing, {
+  uploadListingFiles,
+} from "@/server/actions/postListing";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const form = useForm<PostListingSchema>({
     resolver: zodResolver(postListingSchema),
     mode: "all",
+    shouldFocusError: true,
   });
+  const { toast } = useToast();
 
-  const mobilityConcers = form.getValues("mobility.mobilityConcers");
+  // Check if mobility concerns is "Yes" so we can make required it's related fields
+  const mobilityConcers =
+    form.getValues("mobility.mobilityConcers")?.toLowerCase() === "yes";
 
   const handleSubmit = async (values: PostListingSchema) => {
-    let assessmentData = new FormData();
+    // Validating if mobilityConcerns is "Yes" so it's related fields are required
+    if (mobilityConcers) {
+      const mobilityDevicesValue = form.getValues(
+        "mobility.usedMobilityDevices"
+      );
+      if (!mobilityDevicesValue || mobilityDevicesValue === "") {
+        return form.setError(
+          "mobility.usedMobilityDevices",
+          {
+            message: "Field Required!",
+            type: "required",
+          },
+          { shouldFocus: true }
+        );
+      }
+      const adjustWithOneFloorValue = form.getValues(
+        "mobility.adjustWithOneFloor"
+      );
+      if (!adjustWithOneFloorValue || adjustWithOneFloorValue === "") {
+        return form.setError(
+          "mobility.adjustWithOneFloor",
+          {
+            message: "Field Required!",
+            type: "required",
+          },
+          { shouldFocus: true }
+        );
+      }
+    }
+    let listingFiles = new FormData();
     if (values.teamContact.assessmentData) {
       values.teamContact.assessmentData.forEach((file) =>
-        assessmentData.append("files", file)
+        listingFiles.append("assessments", file)
       );
     }
-    const res = await postListingAction(
-      {
-        ...values,
-        teamContact: {
-          ...values.teamContact,
-          assessmentData: [],
-        },
+    console.log(values.teamContact.assessmentData);
+    const listing = await addNewListing({
+      ...values,
+      teamContact: {
+        ...values.teamContact,
+        assessmentData: [],
       },
-      assessmentData
-    );
-    if (res) window.location.reload();
+    });
+    if (!listing) {
+      return toast({
+        variant: "destructive",
+        title:
+          "Got some error while processing your request. Please try again.",
+      });
+    }
+    const filesSaved = await uploadListingFiles(listing.id, listingFiles);
+    if (!filesSaved) {
+      return toast({
+        variant: "destructive",
+        title:
+          "Got some error while processing your request. Please try again.",
+      });
+    }
+    router.replace("/", { scroll: false });
+    window.location.reload();
   };
   return (
     <main className="max-w-3xl mx-auto p-10">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          method="post"
-          encType="multipart/form-data"
-        >
+        <form onSubmit={form.handleSubmit(handleSubmit)} method="post">
           {/* Personal Information Section Start  */}
           <div>
             <div className="py-4 border-b border-gray-400">
@@ -430,9 +478,7 @@ export default function Home() {
                 name="mobility.usedMobilityDevices"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel
-                      required={mobilityConcers?.toLowerCase() === "yes"}
-                    >
+                    <FormLabel required={mobilityConcers}>
                       {formConfig.mobility.qns.usedMobilityDevices.label}
                     </FormLabel>
                     <FormControl>
@@ -447,9 +493,7 @@ export default function Home() {
                 name="mobility.adjustWithOneFloor"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel
-                      required={mobilityConcers?.toLowerCase() === "yes"}
-                    >
+                    <FormLabel required={mobilityConcers}>
                       {formConfig.mobility.qns.adjustWithOneFloor.label}
                     </FormLabel>
                     <FormControl>
@@ -565,10 +609,10 @@ export default function Home() {
             </div>
           </div>
           {/* Team Contact Section End  */}
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-end py-5">
             <Button
               type="submit"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
+              disabled={form.formState.isSubmitting || !form.formState.isDirty}
             >
               {form.formState.isSubmitting ? <Spinner /> : <span>Submit</span>}
             </Button>

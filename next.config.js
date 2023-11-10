@@ -7,24 +7,24 @@ const nextConfig = {
   //     permanent: false,
   //   },
   // ],
-  rewrites: async () => [
-    {
-      source: "/advance-search",
-      destination: "/frontend",
-    },
-    {
-      source: "/contact",
-      destination: "/frontend",
-    },
-    {
-      source: "/signup",
-      destination: "/frontend",
-    },
-    {
-      source: "/signin",
-      destination: "/frontend",
-    },
-  ],
+  // rewrites: async () => [
+  //   {
+  //     source: "/advance-search",
+  //     destination: "/frontend",
+  //   },
+  //   {
+  //     source: "/contact",
+  //     destination: "/frontend",
+  //   },
+  //   {
+  //     source: "/signup",
+  //     destination: "/frontend",
+  //   },
+  //   {
+  //     source: "/signin",
+  //     destination: "/frontend",
+  //   },
+  // ],
 };
 
 module.exports = nextConfig;

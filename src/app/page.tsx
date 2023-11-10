@@ -1,7 +1,3 @@
-import { cn } from "@/lib/utils";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-
 export default function Page() {
   return (
     <main className="">
@@ -21,7 +17,7 @@ export default function Page() {
           </p>
         </div>
       </section>
-      <section className="p-20">
+      {/* <section className="p-20">
         <div
           className={cn(
             "bg-white rounded-[29px] mx-auto max-w-screen-lg py-8",
@@ -60,7 +56,7 @@ export default function Page() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

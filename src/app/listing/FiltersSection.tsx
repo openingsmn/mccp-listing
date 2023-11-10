@@ -167,7 +167,7 @@ export default function FiltersSection() {
   return (
     <Form {...form}>
       <form method="post">
-        <div className="border-b p-5 flex items-center gap-2">
+        {/* <div className="border-b p-5 flex items-center gap-2">
           <Input placeholder="Search By Zip Code" className="flex-1 w-full" />
           <Button
             size="icon"
@@ -176,7 +176,7 @@ export default function FiltersSection() {
           >
             <MagnifyingGlassIcon />
           </Button>
-        </div>
+        </div> */}
         <div className="p-5 space-y-8">
           {filtersData.map((filter) =>
             filter.singleChoice ? (

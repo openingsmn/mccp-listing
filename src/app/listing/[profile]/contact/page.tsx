@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FileInput, Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { RadioGroupEl } from "@/components/ui/radio-group";
 import formConfig from "@/config/form.cfg";
 import { useForm } from "react-hook-form";
@@ -530,7 +530,7 @@ export default function Page() {
             </div>
             {/* Mobility Section End  */}
             {/* Residential Openings Section Start  */}
-            <div>
+            {/* <div>
               <div className="py-4 border-b border-gray-400">
                 <h2 className="text-3xl font-bold">
                   {formConfig.residentialOpenings.label}
@@ -675,7 +675,7 @@ export default function Page() {
                   )}
                 />
               </div>
-            </div>
+            </div> */}
             {/* Residential Openings Section End  */}
             {/* Team Contact Section Start  */}
             <div>
@@ -731,7 +731,7 @@ export default function Page() {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="teamContact.assessmentData"
                   render={({ field }) => (
@@ -766,7 +766,7 @@ export default function Page() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </div>
             {/* Team Contact Section End  */}

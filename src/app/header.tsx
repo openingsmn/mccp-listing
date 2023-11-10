@@ -13,19 +13,19 @@ const menuItems = [
   },
   {
     href: "/listing",
-    label: "All Listing",
+    label: "All Listings",
     frontend: false,
   },
-  {
-    href: "/advance-search",
-    label: "Advance Search",
-    frontend: true,
-  },
-  {
-    href: "/contact",
-    label: "Contact",
-    frontend: true,
-  },
+  // {
+  //   href: "/advance-search",
+  //   label: "Advance Search",
+  //   frontend: true,
+  // },
+  // {
+  //   href: "/contact",
+  //   label: "Contact",
+  //   frontend: true,
+  // },
 ];
 
 export default function Header() {
@@ -73,7 +73,7 @@ export default function Header() {
           })}
         </nav>
         <div className="flex items-center">
-          <a
+          {/* <a
             href="/signup"
             className={cn(
               "text-[17px] font-poppins text-black focus-visible:outline-none",
@@ -91,7 +91,7 @@ export default function Header() {
             style={{ borderColor: "#BB006E !important" }}
           >
             Sign In
-          </a>
+          </a> */}
         </div>
       </div>
     </header>

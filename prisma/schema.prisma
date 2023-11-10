@@ -16,21 +16,21 @@ model HousingProfile {
   bedroomLocation        String   @db.Text
   beds                   String   @db.Text
   nursingSupport         String   @db.Text
-  overnightSupervison    String   @db.Text
+  overnightSupervision   String   @db.Text
   phone                  String   @db.Text
   physicalAccommodations String   @db.MediumText
   housingType            String   @db.Text
   fundingType            String   @db.Text
-  intellectualDisability String?  @db.Text
+  // intellectualDisability String?  @db.Text
   staffingPattern        String   @db.Text
-  challengingBehaviors   String   @db.Text
+  challengingBehaviours  String   @db.Text
   providerId             Int      @db.Int
   provider               String   @db.Text
   state                  String   @db.Text
   address                String   @db.LongText
   city                   String   @db.Text
   createdAt              DateTime @default(now())
-  updateAt               DateTime @default(now()) @updatedAt
+  updatedAt              DateTime @default(now()) @updatedAt
 }
 
 model ListingSubmission {

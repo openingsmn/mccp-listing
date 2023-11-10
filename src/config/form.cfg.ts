@@ -75,6 +75,33 @@ const formConfig = {
       "Residential Assisted Living and Customized Living Openings List (Please, Check all that apply)",
     description:
       "Simple Health Services tries to keep this list as up to date as possible. We will be in touch to confirm your selections are still available.",
+    qns: {
+      accessible55P: {
+        label: "55+ ACCESSIBLE",
+        values: ["5336 NORTHPORT DRIVE, BROOKLYN CENTER, MN 55429."],
+      },
+      notAccessible55P: {
+        label: "55+ NOT ACCESSIBLE",
+        values: ["8256 SCOTT AVENUE NORTH BROOKLYN PARK, MN 55443."],
+      },
+      accessible18P: {
+        label: "55+ NOT ACCESSIBLE",
+        values: [
+          "1013 WEST RIVER ROAD, CHAMPLIN, MN, 55316.",
+          "6044 CLINTON AVENUE SOUTH, MINNEAPOLIS, MN 55419.",
+          "6426 109TH PLACE NORTH, CHAMPLIN, MN 55316.",
+          "7900 DOUGLAS DRIVE NORTH, BROOKLYN PARK, MN 55443.",
+        ],
+      },
+      notAccessible18P: {
+        label: "55+ NOT ACCESSIBLE",
+        values: ["3693 GROVNER ROAD, NORTH, OAKDALE, MN 55128."],
+      },
+      notAccessible18PFemaleOnly: {
+        label: "55+ NOT ACCESSIBLE - FEMALE ONLY",
+        values: ["7124 16TH STREET NORTH, OAKDALE, MN 55128."],
+      },
+    },
   },
   teamContact: {
     label: "Team Contact Information",

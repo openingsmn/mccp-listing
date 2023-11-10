@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodSchema, z } from "zod";
 import urlParser from "url";
+import queryString from "query-string";
 
 type IRequestValidation<
   TBody extends ZodSchema<any, any>,
@@ -40,6 +41,7 @@ const extractQueryFromURL = (url: string) => {
 
 async function validateRequest(
   req: NextRequest,
+  reqUrl: string,
   validate: IRequestValidation<ZodSchema, ZodSchema, ZodSchema, ZodSchema>
 ) {
   try {
@@ -57,7 +59,9 @@ async function validateRequest(
     //   return (await validate.params.safeParseAsync()).success;
     // }
     if (validate.query) {
-      const query = extractQueryFromURL(req.url);
+      const { query } = queryString.parseUrl(reqUrl, {
+        arrayFormat: "bracket",
+      });
       const querParsing = await validate.query.safeParseAsync(query);
       isValid = querParsing.success;
       if (querParsing.success) {
@@ -79,27 +83,27 @@ export function createRouteHandler<
 >({ validate, handler }: RouteParams<TBody, TParams, TQuery, TResp>) {
   return async function (req: NextRequest, { params }: { params: any }) {
     const { query, body, isValid } = validate
-      ? await validateRequest(req, validate)
+      ? await validateRequest(req, req.url, validate)
       : { isValid: false, body: {}, query: {} };
     if (!isValid) {
-      return {
+      return NextResponse.json({
         succeed: false,
         reason: "BAD_REQUEST",
-      };
+      });
     }
-
     try {
       const requestContext: IRequestContext<TBody> = {
         body: body,
         query: query,
       };
       const response = await handler(requestContext);
+      if (!response) return;
       return NextResponse.json(response);
     } catch (error) {
-      return {
+      return NextResponse.json({
         succeed: false,
         reason: "UNKOWN_ERROR",
-      };
+      });
     }
   };
 }

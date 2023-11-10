@@ -1,114 +1,208 @@
 import { createRouteHandler } from "@/lib/router";
 import db from "@/server/db";
-import { z } from "zod";
+import {
+  ListingFiltersSchema,
+  listingFiltersSchema,
+} from "@/shared/validation/listing.z";
+import { HousingProfile } from "@prisma/client";
 
-const listingFiltersSchema = z.object({
-  page: z
-    .string()
-    .optional()
-    .default("10")
-    .transform((value) => Number(value)),
-  perPage: z
-    .string()
-    .optional()
-    .default("10")
-    .transform((value) => Number(value)),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  housingType: z.array(z.string()).optional(),
-  fundingType: z.array(z.string()).optional(),
-  beds: z.string().optional(),
-  gender: z.string().optional(),
-  age: z
-    .string()
-    .transform((value) => Number(value))
-    .optional(),
-  bedroomLocation: z.array(z.string()).optional(),
-  intelectualDisability: z.array(z.string()).optional(),
-  mentalDiagnose: z.array(z.string()).optional(),
-  physicalAccomodations: z.array(z.string()).optional(),
-  nursingSupport: z.array(z.string()).optional(),
-  challengingBehaviours: z.array(z.string()).optional(),
-  staffingPattern: z.array(z.string()).optional(),
-  overnightSupervision: z.array(z.string()).optional(),
-});
+const filterProfilesData = (
+  data: HousingProfile[],
+  filters: ListingFiltersSchema
+) => {
+  const checkConditions = (profile: HousingProfile) => {
+    return [
+      ...Object.entries(filters).map(([key, value]) => {
+        return () => {
+          if (key === "page" || key === "perPage") return true;
+          if (!Object.keys(profile).includes(key)) return true;
+          if (!value) return true;
+          const difference = String((profile as any)[key])
+            .split(",")
+            .filter((pValue) => {
+              return (Array.isArray(value) ? value : [String(value)])?.some(
+                (fValue) => {
+                  return (
+                    fValue === pValue ||
+                    fValue.includes(pValue) ||
+                    pValue.includes(fValue)
+                  );
+                }
+              );
+            }).length;
+          return difference > 0;
+        };
+      }),
+      // () => {
+      //   if (!filters.fundingType) return true;
+      //   const difference = profile.fundingType.split(",").filter((pValue) => {
+      //     return filters.fundingType?.some((fValue) => {
+      //       return (
+      //         fValue === pValue ||
+      //         fValue.includes(pValue) ||
+      //         pValue.includes(fValue)
+      //       );
+      //     });
+      //   }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.beds) return true;
+      //   return (
+      //     filters.beds === profile.beds ||
+      //     filters.beds.includes(profile.beds) ||
+      //     profile.beds.includes(filters.beds)
+      //   );
+      // },
+      // () => {
+      //   if (
+      //     !filters.intellectualDisability ||
+      //     !profile.intellectualDisability
+      //   ) {
+      //     return true;
+      //   }
+      //   const difference = profile.intellectualDisability
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.intellectualDisability?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.bedroomLocation) return true;
+      //   const difference = profile.bedroomLocation
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.bedroomLocation?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.nursingSupport) return true;
+      //   const difference = profile.nursingSupport
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.nursingSupport?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.staffingPattern) return true;
+      //   const difference = profile.staffingPattern
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.staffingPattern?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.overnightSupervision) return true;
+      //   const difference = profile.overnightSupervision
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.overnightSupervision?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.physicalAccommodations) return true;
+      //   const difference = profile.physicalAccommodations
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.physicalAccommodations?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+      // () => {
+      //   if (!filters.challengingBehaviours) return true;
+      //   const difference = profile.challengingBehaviours
+      //     .split(",")
+      //     .filter((pValue) => {
+      //       return filters.challengingBehaviours?.some((fValue) => {
+      //         return (
+      //           fValue === pValue ||
+      //           fValue.includes(pValue) ||
+      //           pValue.includes(fValue)
+      //         );
+      //       });
+      //     }).length;
+      //   return difference > 0;
+      // },
+    ].some((filter) => filter() === false);
+  };
+  const filteredData = data.filter((profile) => !checkConditions(profile));
+  return filteredData;
+};
 
 export const GET = createRouteHandler({
   validate: {
     query: listingFiltersSchema,
   },
   handler: async ({ query }) => {
-    console.log(query);
     try {
-      const {
-        page,
-        perPage,
-        beds,
-        bedroomLocation,
-        age,
-        state,
-        challengingBehaviours,
-        city,
-        fundingType,
-        gender,
-        housingType,
-        intelectualDisability,
-        mentalDiagnose,
-        nursingSupport,
-        overnightSupervision,
-        physicalAccomodations,
-        staffingPattern,
-      } = query;
+      const { page, perPage } = query;
+      const skipProfiles = page <= 1 ? 0 : (page - 1) * perPage;
       const profiles = await db.housingProfile.findMany({
-        where: {
-          city: city,
-          ...(beds && {
-            beds: beds,
-          }),
-          ...(housingType && {
-            housingType: {
-              in: housingType,
-            },
-          }),
-          ...(fundingType && {
-            fundingType: {
-              in: fundingType,
-            },
-          }),
-          ...(bedroomLocation && {
-            bedroomLocation: {
-              in: bedroomLocation,
-            },
-          }),
-          ...(state && {
-            state: state,
-          }),
-          ...(challengingBehaviours && {
-            challengingBehaviors: {
-              in: challengingBehaviours,
-            },
-          }),
-        },
+        where: {},
         orderBy: {
           provider: "asc",
         },
-        ...(perPage !== -1 && {
-          take: perPage,
-          skip: page <= 1 ? 0 : (page - 1) * perPage,
-        }),
       });
-      console.log(profiles.length);
-      const totalCount = await db.housingProfile.count({});
+      let filteredProfiles = filterProfilesData(profiles, query);
+      const totalCount = filteredProfiles.length;
+      // console.log("Skip Profiles = ", skipProfiles);
+      filteredProfiles = filteredProfiles.slice(
+        skipProfiles,
+        skipProfiles + perPage
+      );
+      // const totalCount = await db.housingProfile.count({});
+      // console.log("Total Count = ", totalCount);
       return {
         succeed: true,
         pagination: {
           page: page,
           perPage: perPage,
-          results: profiles.length,
+          results: filteredProfiles.length,
           totalPages: Math.ceil(totalCount / perPage),
           count: totalCount,
         },
-        data: profiles,
+        data: filteredProfiles,
       };
     } catch (error) {
       return {

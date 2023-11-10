@@ -70,7 +70,7 @@ const RadioGroupEl = ({
             key={option.value}
             role="button"
             onClick={() => onChange?.(option.value)}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 cursor-pointer"
           >
             <span
               className={cn(
@@ -82,7 +82,7 @@ const RadioGroupEl = ({
                 <CheckIcon className="w-full h-full" />
               )}
             </span>
-            <Label className="text-sm font-normal" htmlFor={optionId}>
+            <Label className="text-sm font-normal cursor-pointer" htmlFor={optionId}>
               {option.label}
             </Label>
           </div>

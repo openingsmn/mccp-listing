@@ -13,8 +13,13 @@ const config: Config = {
     },
     extend: {
       colors: {
-        primary: "#71B9EA",
-        secondary: "#D4EAF9",
+        primary: "#BB006E",
+        nprimary: "#BB006E",
+        // secondary: "#D4EAF9",
+      },
+      fontFamily: {
+        "bebas-neue": "var(--font-bebas-neue)",
+        poppins: "var(--font-poppins)",
       },
       keyframes: {
         "accordion-down": {

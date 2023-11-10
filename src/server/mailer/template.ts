@@ -1,7 +1,9 @@
 import { IListingSubmission } from "@/typing/db";
 import { format } from "date-fns";
 
-export default function generateEmailTemplate(listing: IListingSubmission): string {
+export default function generateEmailTemplate(
+  submisionData: IListingSubmission
+): string {
   return /* HTML */ `
     <!DOCTYPE html>
     <html lang="en">
@@ -86,45 +88,47 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
               <div class="label">
                 <h3>Type Of Waiver</h3>
               </div>
-              <div class="values"><p>${listing.waiverType}</p></div>
+              <div class="values"><p>${submisionData.waiverType}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Specific Options</h3>
               </div>
-              <div class="values"><p>${listing.waiverTypeSpecific}</p></div>
+              <div class="values">
+                <p>${submisionData.waiverTypeSpecific}</p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Timeframe Needed</h3>
               </div>
-              <div class="values"><p>${listing.timeframe}</p></div>
+              <div class="values"><p>${submisionData.timeframe}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Type Of Housing Desired</h3>
               </div>
-              <div class="values"><p>${listing.housingType}</p></div>
+              <div class="values"><p>${submisionData.housingType}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Full Name</h3>
               </div>
-              <div class="values"><p>${listing.fullName}</p></div>
+              <div class="values"><p>${submisionData.fullName}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Date of Birth</h3>
               </div>
               <div class="values">
-                <p>${format(listing.dateOfBirth, "PPP")}</p>
+                <p>${format(submisionData.dateOfBirth, "PPP")}</p>
               </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>PMI Number</h3>
               </div>
-              <div class="values"><p>${listing.pmiNumber}</p></div>
+              <div class="values"><p>${submisionData.pmiNumber}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
@@ -132,14 +136,14 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
               </div>
               <div class="values">
                 <p>
-                  ${listing.address?.fullAddress
-                    ? listing.address.fullAddress
+                  ${submisionData.address?.fullAddress
+                    ? submisionData.address.fullAddress
                     : ""}
-                  ${listing.address?.city
-                    ? `</br> ${listing.address.city}`
+                  ${submisionData.address?.city
+                    ? `<br /> ${submisionData.address.city}`
                     : ""}
-                  ${listing.address?.postalCode
-                    ? `</br> ${listing.address.postalCode}`
+                  ${submisionData.address?.postalCode
+                    ? `<br /> ${submisionData.address.postalCode}`
                     : ""}
                 </p>
               </div>
@@ -148,25 +152,27 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
               <div class="label">
                 <h3>Email Address</h3>
               </div>
-              <div class="values"><p>${listing.email}</p></div>
+              <div class="values"><p>${submisionData.email}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Religious & Cultural Preference(s)</h3>
               </div>
-              <div class="values"><p>${listing.relegiousPref ?? ""}</p></div>
+              <div class="values">
+                <p>${submisionData.relegiousPref ?? ""}</p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Gender Identity</h3>
               </div>
-              <div class="values"><p>${listing.gender ?? ""}</p></div>
+              <div class="values"><p>${submisionData.gender ?? ""}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Race/Ethnicity</h3>
               </div>
-              <div class="values"><p>${listing.race ?? ""}</p></div>
+              <div class="values"><p>${submisionData.race ?? ""}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
@@ -175,26 +181,28 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                   Specific Medical Needs
                 </h3>
               </div>
-              <div class="values"><p>${listing.equipementsNeeded }</p></div>
+              <div class="values">
+                <p>${submisionData.equipementsNeeded}</p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Guardian Status</h3>
               </div>
-              <div class="values"><p>${listing.guardianStatus}</p></div>
+              <div class="values"><p>${submisionData.guardianStatus}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Current Living Situation</h3>
               </div>
-              <div class="values"><p>${listing.livingSituation}</p></div>
+              <div class="values"><p>${submisionData.livingSituation}</p></div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>Does this person have mobility concerns?</h3>
               </div>
               <div class="values">
-                <p>${listing.mobility?.mobilityConcers ?? ""}</p>
+                <p>${submisionData.mobility?.mobilityConcers ?? ""}</p>
               </div>
             </div>
             <div class="miflex">
@@ -207,7 +215,7 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                 </h3>
               </div>
               <div class="values">
-                <p>${listing.mobility?.usedMobilityDevices ?? ""}</p>
+                <p>${submisionData.mobility?.usedMobilityDevices ?? ""}</p>
               </div>
             </div>
             <div class="miflex">
@@ -219,38 +227,73 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                 </h3>
               </div>
               <div class="values">
-                <p>${listing.mobility?.adjustWithOneFloor ?? ""}</p>
+                <p>${submisionData.mobility?.adjustWithOneFloor ?? ""}</p>
               </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>55+ ACCESSIBLE</h3>
               </div>
-              <div class="values"><p>${""}</p></div>
+              <div class="values">
+                <p>
+                  ${submisionData.residentialOpenings?.accessible55P?.replaceAll(
+                    "&&",
+                    "<br />"
+                  ) ?? ""}
+                </p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>55+ NOT ACCESSIBLE</h3>
               </div>
-              <div class="values"><p>${""}</p></div>
+              <div class="values">
+                <p>
+                  ${submisionData.residentialOpenings?.notAccessible55P?.replaceAll(
+                    "&&",
+                    "<br />"
+                  ) ?? ""}
+                </p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>18+ ACCESSIBLE</h3>
               </div>
-              <div class="values"><p>${""}</p></div>
+              <div class="values">
+                <p>
+                  ${submisionData.residentialOpenings?.accessible18P?.replaceAll(
+                    "&&",
+                    "<br />"
+                  ) ?? ""}
+                </p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>18+ NOT ACCESSIBLE</h3>
               </div>
-              <div class="values"><p>${""}</p></div>
+              <div class="values">
+                <p>
+                  ${submisionData.residentialOpenings?.notAccessible18P?.replaceAll(
+                    "&&",
+                    "<br />"
+                  ) ?? ""}
+                </p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
                 <h3>18+ NOT ACCESSIBLE- FEMALE ONLY</h3>
               </div>
-              <div class="values"><p>${""}</p></div>
+              <div class="values">
+                <p>
+                  ${submisionData.residentialOpenings?.notAccessible18PFemaleOnly?.replaceAll(
+                    "&&",
+                    "<br />"
+                  ) ?? ""}
+                </p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
@@ -260,7 +303,7 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                 </h3>
               </div>
               <div class="values">
-                <p>${listing.teamContact?.caseManager ?? ""}</p>
+                <p>${submisionData.teamContact?.caseManager ?? ""}</p>
               </div>
             </div>
             <div class="miflex">
@@ -270,7 +313,9 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                   Address*If different from Waiver Case Manager
                 </h3>
               </div>
-              <div class="values"><p>${listing.teamContact?.referrer ?? ""}</p></div>
+              <div class="values">
+                <p>${submisionData.teamContact?.referrer ?? ""}</p>
+              </div>
             </div>
             <div class="miflex">
               <div class="label">
@@ -280,7 +325,7 @@ export default function generateEmailTemplate(listing: IListingSubmission): stri
                 </h3>
               </div>
               <div class="values">
-                <p>${listing.teamContact?.legalRepresentative ?? ""}</p>
+                <p>${submisionData.teamContact?.legalRepresentative ?? ""}</p>
               </div>
             </div>
             <div class="miflex">

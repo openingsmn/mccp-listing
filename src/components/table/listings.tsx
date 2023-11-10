@@ -1,8 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HousingProfile } from "@prisma/client";
 import { DataTableColumnHeader } from "./basic/table";
 import { perPageCountOptions } from "./basic/pagination";
@@ -11,6 +10,8 @@ import { PaginatedApiResponse } from "@/typing/api";
 import DataTable from "./basic";
 import axios from "axios";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useListingStore } from "../hooks/stores/useListing";
 
 const tableColumns: ColumnDef<HousingProfile>[] = [
   // {
@@ -41,8 +42,8 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex  space-x-2">
-          <span className={cn("font-bold truncate font-nunito text-slate-600")}>
+        <div className="flex space-x-2">
+          <span className={cn("font-bold font-nunito text-slate-600")}>
             {row.original.provider}
           </span>
         </div>
@@ -58,9 +59,7 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
       return (
         <div className="flex  space-x-2">
           <span
-            className={cn(
-              "max-w-full truncate font-medium font-nunito text-slate-600"
-            )}
+            className={cn("max-w-full font-medium font-nunito text-slate-600")}
           >
             {row.original.address}
           </span>
@@ -77,9 +76,7 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
       return (
         <div className="flex  space-x-2">
           <span
-            className={cn(
-              "max-w-full truncate font-medium font-nunito text-slate-600"
-            )}
+            className={cn("max-w-full font-medium font-nunito text-slate-600")}
           >
             {row.original.city}
           </span>
@@ -89,7 +86,7 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
   },
   {
     id: "updated",
-    accessorFn: (row) => format(new Date(row.updateAt), "PPP"),
+    accessorFn: (row) => format(new Date(row.updatedAt), "PPP"),
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Updated" />
     ),
@@ -97,11 +94,9 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
       return (
         <div className="flex  space-x-2">
           <span
-            className={cn(
-              "max-w-full truncate font-medium font-nunito text-slate-600"
-            )}
+            className={cn("max-w-full font-medium font-nunito text-slate-600")}
           >
-            {format(new Date(row.original.updateAt), "PP")}
+            {format(new Date(row.original.updatedAt), "PP")}
           </span>
         </div>
       );
@@ -110,51 +105,42 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
 ];
 
 export default function ListingTable() {
-  const [tableData, setTableData] =
-    useState<PaginatedApiResponse<HousingProfile> | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState<number>(perPageCountOptions[0]);
+  const router = useRouter();
+  const { filters, setFilters, listingData, loadListingData } =
+    useListingStore();
 
   const pagination: PaginationProps = {
-    onPageChange: setCurrentPage,
-    currentPage: currentPage,
-    perPage: perPage,
-    setPerPage: setPerPage,
-    totalPages: tableData?.pagination?.totalPages ?? 1,
-  };
-
-  // tableData?.data?.map((da)=> da.)
-
-  const loadData = async () => {
-    setTableData(null);
-    const queryString = Object.entries({ page: currentPage, perPage: perPage })
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&");
-    const res = await axios.get<PaginatedApiResponse<HousingProfile>>(
-      `/api/listing/?${queryString}`
-    );
-    if (res.data.succeed) {
-      setTableData(res.data);
-    }
+    onPageChange: (page) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        page: page,
+      }));
+    },
+    currentPage: filters.page,
+    perPage: filters.perPage,
+    setPerPage: (perPage) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        perPage: perPage,
+      }));
+    },
+    totalPages: listingData?.pagination?.totalPages ?? 1,
   };
 
   useEffect(() => {
-    console.log(currentPage);
-    console.log(perPage);
-    loadData();
-  }, [currentPage, perPage]);
-
-  useEffect(() => {
-    loadData();
+    loadListingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  tableData;
   return (
     <div>
       <DataTable
         pagination={pagination}
         columns={tableColumns}
-        tableData={tableData}
+        tableData={listingData}
+        onRowClick={(row: HousingProfile) => {
+          router.push(`/listing/${row.id}`);
+        }}
       />
     </div>
   );

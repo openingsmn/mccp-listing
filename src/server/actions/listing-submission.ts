@@ -2,12 +2,15 @@
 import { ListingSubmissionSchema } from "@/shared/validation/listing.z";
 import db from "../db";
 import { saveFileToLocal } from "../files-handler";
+import { IListingSubmission } from "@/typing/db";
+import { sendListingEmail } from "../mailer";
 
 const SITE_URL = process.env.SITE_URL ?? "";
 
 export default async function addListingSubmission(
   data: ListingSubmissionSchema
 ) {
+  console.log(data.residentialOpenings);
   try {
     // Saving Data into Database
     const submissionData = await db.listingSubmission.create({
@@ -46,7 +49,24 @@ export default async function addListingSubmission(
               },
             },
           }),
-        // residentialOpenings: JSON.stringify({}),
+        ...(data.residentialOpenings && {
+          residentialOpenings: {
+            create: {
+              accessible55P:
+                data.residentialOpenings?.accessible55P?.join("&&"),
+              notAccessible55P:
+                data.residentialOpenings?.notAccessible55P?.join("&&"),
+              accessible18P:
+                data.residentialOpenings?.accessible18P?.join("&&"),
+              notAccessible18P:
+                data.residentialOpenings?.notAccessible18P?.join("&&"),
+              notAccessible18PFemaleOnly:
+                data.residentialOpenings?.notAccessible18PFemaleOnly?.join(
+                  "&&"
+                ),
+            },
+          },
+        }),
         teamContact: {
           create: {
             assessmentData: "",
@@ -65,10 +85,13 @@ export default async function addListingSubmission(
             assessmentFiles: true,
           },
         },
+        residentialOpenings: true,
       },
     });
     // Sending Email to user who submitted form
-    // await sendListingEmail(submissionData as IListingSubmission);
+    if (data.email) {
+      await sendListingEmail(submissionData as IListingSubmission);
+    }
     return submissionData;
   } catch (error) {
     return null;
@@ -91,7 +114,6 @@ export async function uploadListingSubmissionFiles(
         return filePath;
       })
     );
-    console.log(savedAssFiles);
     if (savedAssFiles.length > 0) {
       const listing = await db.teamContact.update({
         where: {

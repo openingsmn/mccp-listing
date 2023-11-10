@@ -191,11 +191,11 @@ const FormCalendar = ({ value, onChange }: FormCalendarProps) => {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full h-10 pl-3 text-left font-normal",
+            "w-full h-10 px-3 text-left font-normal",
             !value && "text-muted-foreground"
           )}
         >
-          {value ? format(value, "PPP") : <span>Pick a date</span>}
+          <span>{value ? format(value, "PPP") : <span>Pick a date</span>}</span>
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

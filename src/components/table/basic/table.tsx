@@ -105,16 +105,16 @@ export function BaseTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full border rounded-t">
-      {showToolbar && (
+    <div className="w-full">
+      {/* {showToolbar && (
         <DataTableToolbar
           table={table}
           {...toolbarProps}
           filterValue={globalFilter}
           setFilterValue={setGlobalFilter}
         />
-      )}
-      <div className="border">
+      )} */}
+      <div className="borde">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -165,7 +165,7 @@ export function BaseTable<TData, TValue>({
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-40 py-40">
                   <div className="flex items-center justify-center">
-                    <Spinner className="w-20 border-secondary" />
+                    <Spinner className="w-20 border-primary" />
                   </div>
                 </TableCell>
               </TableRow>

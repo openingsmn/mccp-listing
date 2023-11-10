@@ -13,9 +13,9 @@ async function main() {
         .replaceAll("/", "")
         .trim(),
       phone: String(profile.phone_number),
-      challengingBehaviors: profile.challenging_behaviors,
+      challengingBehaviours: profile.challenging_behaviors,
       nursingSupport: profile.nursing_support,
-      overnightSupervison: profile.overnight_supervision,
+      overnightSupervision: profile.overnight_supervision,
       physicalAccommodations: profile.physical_accommodations,
       provider: profile.provider,
       staffingPattern: profile.typical_staffing_pattern,

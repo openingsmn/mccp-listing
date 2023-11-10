@@ -2,31 +2,38 @@ import nodemailer from "nodemailer";
 import generateEmailTemplate from "./template";
 import { IListingSubmission } from "@/typing/db";
 
+const MAILER_EMAIL = process.env.MAILER_FROM_EMAIL as string;
+const MAILER_FROM_NAME = process.env.MAILER_FROM_NAME as string;
+const MAILER_PWD = process.env.MAILER_FROM_PASSWORD as string;
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  // host: "smtp.hostinger.com",
   secure: true,
+  // port: 465,
   auth: {
-    user: process.env.MAILER_FROM_EMAIL as string,
-    pass: process.env.MAILER_FROM_PASSWORD as string,
+    user: MAILER_EMAIL,
+    pass: MAILER_PWD,
   },
 });
 
 export async function sendListingEmail(
-  listing: IListingSubmission
+  submision: IListingSubmission
 ): Promise<boolean> {
-  if (!listing.email) return false;
+  if (!submision.email) return false;
   try {
     const info = await transporter.sendMail({
-      from: '"Ali Mi6" <alihussnain.mi6@mgil.com>',
-      to: listing.email,
+      from: `"${MAILER_FROM_NAME}" <${MAILER_EMAIL}>`,
+      to: submision.email,
       subject: "",
       text: "",
-      html: generateEmailTemplate(listing),
+      html: generateEmailTemplate(submision),
     });
 
     console.log("Message sent: %s", info.messageId);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 }

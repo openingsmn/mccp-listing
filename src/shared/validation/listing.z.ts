@@ -54,21 +54,12 @@ export const listingSubmissionSchema = z.object({
   dateOfBirth: z.date(),
   pmiNumber: z.string({ required_error: "Field Required!" }),
   address: addressSchema.partial().optional(),
-  phone: z.string({ required_error: "Field Required!" }).optional().default(""),
-  email: z.string({ required_error: "Field Required!" }).optional().default(""),
-  relegiousPref: z
-    .string({ required_error: "Field Required!" })
-    .optional()
-    .default(""),
-  gender: z
-    .string({ required_error: "Field Required!" })
-    .optional()
-    .default(""),
-  race: z.string({ required_error: "Field Required!" }).optional().default(""),
-  equipementsNeeded: z
-    .string({ required_error: "Field Required!" })
-    .optional()
-    .default(""),
+  phone: z.string({ required_error: "Field Required!" }).optional(),
+  email: z.string({ required_error: "Field Required!" }).optional(),
+  relegiousPref: z.string({ required_error: "Field Required!" }).optional(),
+  gender: z.string({ required_error: "Field Required!" }).optional(),
+  race: z.string({ required_error: "Field Required!" }).optional(),
+  equipementsNeeded: z.string({ required_error: "Field Required!" }),
   guardianStatus: z.string({ required_error: "Field Required!" }),
   livingSituation: z.string({ required_error: "Field Required!" }),
   mobility: mobilitySchema,
@@ -77,3 +68,36 @@ export const listingSubmissionSchema = z.object({
 });
 
 export type ListingSubmissionSchema = z.infer<typeof listingSubmissionSchema>;
+
+export const listingFiltersSchema = z.object({
+  page: z
+    .union([z.string(), z.number()])
+    .optional()
+    .default(1)
+    .transform((value) => (typeof value === "string" ? Number(value) : value)),
+  perPage: z
+    .union([z.string(), z.number()])
+    .optional()
+    .default(20)
+    .transform((value) => (typeof value === "string" ? Number(value) : value)),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  housingType: z.array(z.string()).optional(),
+  fundingType: z.array(z.string()).optional(),
+  beds: z.string().optional(),
+  gender: z.string().optional(),
+  age: z
+    .string()
+    .transform((value) => Number(value))
+    .optional(),
+  bedroomLocation: z.array(z.string()).optional(),
+  intellectualDisability: z.array(z.string()).optional(),
+  mentalDiagnosis: z.array(z.string()).optional(),
+  physicalAccommodations: z.array(z.string()).optional(),
+  nursingSupport: z.array(z.string()).optional(),
+  challengingBehaviours: z.array(z.string()).optional(),
+  staffingPattern: z.array(z.string()).optional(),
+  overnightSupervision: z.array(z.string()).optional(),
+});
+
+export type ListingFiltersSchema = z.infer<typeof listingFiltersSchema>;

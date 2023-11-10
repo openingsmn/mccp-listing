@@ -2,6 +2,7 @@ import {
   Address,
   ListingSubmission,
   Mobility,
+  ResidntialOpening,
   TeamContact,
 } from "@prisma/client";
 
@@ -21,4 +22,5 @@ type IListingSubmission = ListingSubmission & {
   address?: IAddress;
   mobility?: IMobility;
   teamContact?: ITeamContact;
+  residentialOpenings?: ResidntialOpening;
 };

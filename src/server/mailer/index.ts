@@ -3,6 +3,7 @@ import generateEmailTemplate from "./template";
 import { IListingSubmission } from "@/typing/db";
 
 const MAILER_EMAIL = process.env.MAILER_FROM_EMAIL as string;
+const RECEIVER_EMAIL = process.env.MAILER_TO_EMAIL as string;
 const MAILER_FROM_NAME = process.env.MAILER_FROM_NAME as string;
 const MAILER_PWD = process.env.MAILER_FROM_PASSWORD as string;
 
@@ -24,7 +25,7 @@ export async function sendListingEmail(
   try {
     const info = await transporter.sendMail({
       from: `"${MAILER_FROM_NAME}" <${MAILER_EMAIL}>`,
-      to: submision.email,
+      to: RECEIVER_EMAIL,
       subject: "",
       text: "",
       html: generateEmailTemplate(submision),

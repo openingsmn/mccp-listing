@@ -16,11 +16,11 @@ const menuItems = [
     label: "All Listings",
     frontend: false,
   },
-  // {
-  //   href: "/advance-search",
-  //   label: "Advance Search",
-  //   frontend: true,
-  // },
+  {
+    href: "/about",
+    label: "About",
+    frontend: false,
+  },
   // {
   //   href: "/contact",
   //   label: "Contact",
@@ -38,19 +38,21 @@ export default function Header() {
   }, []);
   return (
     <header
+      // py-[20px]
       className={cn(
-        "w-full fixed top-0 left-0 h-[90px] px-10 py-[20px] bg-slate-100 border-b z-50",
+        "w-full fixed top-0 left-0 h-[90px] px-10  bg-[#FAFCF7] border-b z-50",
         scrollY > 100 && "shadow-xl"
       )}
     >
-      <div className="mx-auto flex items-center justify-between">
-        <Link href="/" className="">
+      <div className="mx-auto h-full flex items-center justify-between">
+        <Link href="/" className="w-auto h-full">
           <Image
-            src={"/logo2.png"}
-            width={184}
-            height={65}
+            src={"/logo.png"}
+            width={60}
+            height={60}
             alt="Logo"
-            className="h-[50px] w-auto"
+            unoptimized
+            className="h-full w-auto aspect-square"
           />
         </Link>
         <nav className="flex items-center gap-8">
@@ -72,8 +74,8 @@ export default function Header() {
             );
           })}
         </nav>
-        <div className="flex items-center">
-          {/* <a
+        {/* <div className="flex items-center">
+          <a
             href="/signup"
             className={cn(
               "text-[17px] font-poppins text-black focus-visible:outline-none",
@@ -91,8 +93,8 @@ export default function Header() {
             style={{ borderColor: "#BB006E !important" }}
           >
             Sign In
-          </a> */}
-        </div>
+          </a>
+        </div> */}
       </div>
     </header>
   );

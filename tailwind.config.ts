@@ -13,8 +13,10 @@ const config: Config = {
     },
     extend: {
       colors: {
-        primary: "#BB006E",
-        nprimary: "#BB006E",
+        primary: "#FA7995",
+        nprimary: "#FA7995",
+        // primary: "#BB006E",
+        // nprimary: "#BB006E",
         // secondary: "#D4EAF9",
       },
       fontFamily: {

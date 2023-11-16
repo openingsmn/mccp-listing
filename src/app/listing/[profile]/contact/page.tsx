@@ -28,6 +28,7 @@ import addListingSubmission, {
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { CheckboxGroupEl } from "@/components/ui/checkbox";
+import Image from "next/image";
 
 export default function Page() {
   const router = useRouter();
@@ -770,12 +771,13 @@ export default function Page() {
               </div>
             </div>
             {/* Team Contact Section End  */}
-            <div className="flex items-center justify-end py-5">
+            <div className="flex items-center justify-center py-5">
               <Button
                 type="submit"
                 disabled={
                   form.formState.isSubmitting || !form.formState.isDirty
                 }
+                className="w-full max-w-[300px]"
               >
                 {form.formState.isSubmitting ? (
                   <Spinner />
@@ -783,6 +785,15 @@ export default function Page() {
                   <span>Submit</span>
                 )}
               </Button>
+            </div>
+            <div className="flex items-center justify-end mt-5">
+              <Image
+                src={"/images/hipaa-badge-compliance.png"}
+                width={100}
+                height={40}
+                alt="Hippa Compliance Badge"
+                className="h-[40px] w-auto"
+              />
             </div>
           </form>
         </Form>

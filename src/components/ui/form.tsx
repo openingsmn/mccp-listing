@@ -176,7 +176,6 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
-FormMessage.displayName = "FormMessage";
 
 type FormCalendarProps = {
   value?: Date;

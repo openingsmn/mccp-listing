@@ -1,7 +1,12 @@
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+
 export default function Page() {
   return (
     <main className="">
-      <section className="home-screen flex items-center min-h-[calc(100vh_-_90px)] px-20">
+      <section className="home-screen flex items-center min-h-[calc(100vh_-_90px)] px-20 relative">
         <div className="w-full max-w-screen-xl mx-auto">
           <h2 className="text-[130px] leading-[120px] tracking-[4px] text-white">
             <span className="font-sans">SEARCH FOR</span>
@@ -15,6 +20,20 @@ export default function Page() {
             the lives of people with Intellectual Disabilities and Mental Health
             issues. Assessment, strategies, trainings, crisis homes and more
           </p>
+        </div>
+        <div className="absolute bottom-20 right-20">
+          <Link
+            href="/listing"
+            className={cn(
+              buttonVariants({
+                variant: "primary",
+                className: "tracking-widest uppercase gap-5 h-16",
+              })
+            )}
+          >
+            See All Listing
+            <ArrowRightIcon className="w-6 h-6" />
+          </Link>
         </div>
       </section>
       {/* <section className="p-20">

@@ -3,7 +3,8 @@
 Setup .env file
 
 ```bash
-set DATABASE_URL as DATABASE_URL=mysql://[username]:[password]@[hostname]:[database port]/[database name]
+set DATABASE_URL
+DATABASE_URL=mysql://[username]:[password]@[hostname]:[database port]/[database name]
 # i.e DATABASE_URL=mysql://root:@localhost:3306/mccp-listing
 set MAILER_FROM_NAME (used as sender name when sending email)
 # i.e MAILER_FROM_NAME=MCCP Listing

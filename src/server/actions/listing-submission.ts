@@ -5,6 +5,7 @@ import { IListingSubmission } from "@/typing/db";
 import { sendListingEmail } from "../mailer";
 
 const SITE_URL = process.env.SITE_URL ?? "";
+const RECEIVER_EMAIL = process.env.MAILER_TO_EMAIL;
 
 export default async function addListingSubmission(
   data: ListingSubmissionSchema
@@ -87,10 +88,7 @@ export default async function addListingSubmission(
         residentialOpenings: true,
       },
     });
-    // Sending Email to user who submitted form
-    if (data.email && data.email !== "") {
-      await sendListingEmail(submissionData as IListingSubmission);
-    }
+    await sendListingEmail(submissionData as IListingSubmission);
     return submissionData;
   } catch (error) {
     return null;

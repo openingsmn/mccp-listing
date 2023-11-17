@@ -45,4 +45,4 @@ npm run build
 npm run start
 ```
 
-App is running at [http://localhost:3000](http://localhost:3000).
+App is now running at [http://localhost:3000](http://localhost:3000).

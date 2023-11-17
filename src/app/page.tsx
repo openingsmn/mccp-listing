@@ -16,9 +16,12 @@ export default function Page() {
             <span className="font-sans">OPENINGS</span>
           </h2>
           <p className="mt-2 text-lg text-white max-w-[486px] tracking-[1px]">
-            MCCP provides timely assistance to address behavioral concerns in
+            MCCP provides up-to-date openings for clients on CADI, BI, EW
+            waivers looking to move into Customized Living/Assisted Living
+            Facilities
+            {/* MCCP provides timely assistance to address behavioral concerns in
             the lives of people with Intellectual Disabilities and Mental Health
-            issues. Assessment, strategies, trainings, crisis homes and more
+            issues. Assessment, strategies, trainings, crisis homes and more */}
           </p>
         </div>
         <div className="absolute bottom-20 right-20">

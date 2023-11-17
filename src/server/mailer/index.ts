@@ -21,7 +21,8 @@ const transporter = nodemailer.createTransport({
 export async function sendListingEmail(
   submision: IListingSubmission
 ): Promise<boolean> {
-  if (!submision.email) return false;
+  if (!RECEIVER_EMAIL) return false;
+  // if (!submision.email) return false;
   try {
     const info = await transporter.sendMail({
       from: `"${MAILER_FROM_NAME}" <${MAILER_EMAIL}>`,

@@ -76,14 +76,8 @@ export default function generateEmailTemplate(
       </head>
       <body>
         <div class="mailcontainer">
-          <div class="logo">
-            <img
-              src="https://mi6.global/wp-content/uploads/2023/09/Untitled-design40.svg"
-              alt=""
-              width="100"
-            />
-          </div>
-          <div class="forminfo">
+          <h1 style="text-align: center;">MCCP LISTINGS</h1>
+          <div class="forminfo" style="margin-top: 20px;">
             <div class="miflex">
               <div class="label">
                 <h3>Type Of Waiver</h3>

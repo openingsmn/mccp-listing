@@ -176,8 +176,6 @@ export const GET = createRouteHandler({
   },
   handler: async ({ query }) => {
     try {
-      const { page, perPage } = query;
-      const skipProfiles = page <= 1 ? 0 : (page - 1) * perPage;
       const profiles = await db.housingProfile.findMany({
         where: {},
         orderBy: {
@@ -187,19 +185,22 @@ export const GET = createRouteHandler({
       let filteredProfiles = filterProfilesData(profiles, query);
       const totalCount = filteredProfiles.length;
       // console.log("Skip Profiles = ", skipProfiles);
+      const totalPages = Math.ceil(totalCount / query.perPage);
+      const currentPage = Math.min(query.page, totalPages)
+      const skipProfiles = currentPage <= 1 ? 0 : (currentPage - 1) * query.perPage;
       filteredProfiles = filteredProfiles.slice(
         skipProfiles,
-        skipProfiles + perPage
+        skipProfiles + query.perPage
       );
       // const totalCount = await db.housingProfile.count({});
       // console.log("Total Count = ", totalCount);
       return {
         succeed: true,
         pagination: {
-          page: page,
-          perPage: perPage,
+          page: currentPage,
+          perPage: query.perPage,
           results: filteredProfiles.length,
-          totalPages: Math.ceil(totalCount / perPage),
+          totalPages: totalPages,
           count: totalCount,
         },
         data: filteredProfiles,

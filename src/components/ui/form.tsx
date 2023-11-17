@@ -176,7 +176,6 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
-
 type FormCalendarProps = {
   value?: Date;
   onChange?: (value?: Date) => void;
@@ -184,6 +183,12 @@ type FormCalendarProps = {
 
 const FormCalendar = ({ value, onChange }: FormCalendarProps) => {
   const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState(value);
+
+  React.useEffect(() => {
+    onChange?.(date);
+  }, [date, onChange]);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

@@ -19,16 +19,30 @@ MAILER_TO_EMAIL=(receiver email to which email will be sent about listing submis
 # i.e MAILER_TO_EMAIL=example@gmail.com
 ```
 
-First, run the development server:
+Instal Packages:
+
+```bash
+npm install
+```
+
+Migrate Database:
+
+```bash
+npm run migrate
+```
+
+Start Developement Server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Start Production Server:
+
+```bash
+npm run build
+# then
+npm run start
+```
+
+App is running at [http://localhost:3000](http://localhost:3000).

@@ -16,7 +16,6 @@ MAILER_FROM_PASSWORD=(sender email app password used for authentication when sen
 # i.e MAILER_FROM_PASSWORD="pppp pppp pppp pppp"
 See below for app password generation guide
 
-
 MAILER_TO_EMAIL=(receiver email to which email will be sent about listing submission when form submitted)
 # i.e MAILER_TO_EMAIL=example@gmail.com
 ```

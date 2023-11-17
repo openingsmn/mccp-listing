@@ -9,14 +9,16 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-
+import Calendar from "react-calendar";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button } from "./button";
 import { format } from "date-fns";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { Calendar } from "./calendar";
+// import { Calendar } from "./calendar";
+import { SelectEl } from "./select";
+import "react-calendar/dist/Calendar.css";
 
 const Form = FormProvider;
 
@@ -196,23 +198,56 @@ const FormCalendar = ({ value, onChange }: FormCalendarProps) => {
           variant={"outline"}
           className={cn(
             "w-full h-10 px-3 text-left font-normal",
-            !value && "text-muted-foreground"
+            !date && "text-muted-foreground"
           )}
         >
-          <span>{value ? format(value, "PPP") : <span>Pick a date</span>}</span>
+          <span>{date ? format(date, "PPP") : <span>Pick a date</span>}</span>
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
+        {/* <SelectEl
+          placeholder="Select Year"
+          value={date?.getFullYear()?.toString()}
+          onChange={(opt) => {
+            if (!opt) return setDate(new Date());
+            const newDate = new Date(
+              Number(opt.value),
+              date?.getMonth() || 0,
+              1
+            );
+            setDate(newDate);
+          }}
+          options={Array.from(Array(100).keys()).map((num) => {
+            const year = String(new Date().getFullYear() - num);
+            return {
+              label: year,
+              value: year,
+            };
+          })}
+        /> */}
         <Calendar
+          onChange={(value) => {
+            setDate(value ? new Date(value?.toString()) : new Date());
+            setOpen(false);
+          }}
+          maxDate={new Date()}
+          value={value}
+          className="rounded-md overflow-hidden"
+        />
+
+        {/* <Calendar
+          key={date?.getFullYear()}
           mode="single"
-          selected={value}
+          fromDate={date}
+          toDate={new Date()}
+          selected={date}
           onSelect={(value) => {
-            onChange?.(value);
+            setDate(value);
             setOpen(false);
           }}
           initialFocus
-        />
+        /> */}
       </PopoverContent>
     </Popover>
   );

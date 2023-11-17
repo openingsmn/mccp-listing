@@ -22,9 +22,7 @@ import { Label } from "@/components/ui/label";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
-import addListingSubmission, {
-  uploadListingSubmissionFiles,
-} from "@/server/actions/listing-submission";
+import addListingSubmission from "@/server/actions/listing-submission";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { CheckboxGroupEl } from "@/components/ui/checkbox";
@@ -34,7 +32,7 @@ export default function Page() {
   const router = useRouter();
   const form = useForm<ListingSubmissionSchema>({
     resolver: zodResolver(listingSubmissionSchema),
-    mode: "all",
+    mode: "onChange",
     shouldFocusError: true,
   });
   const { toast } = useToast();
@@ -73,13 +71,13 @@ export default function Page() {
         );
       }
     }
-    let listingFiles = new FormData();
-    if (values.teamContact.assessmentData) {
-      values.teamContact.assessmentData.forEach((file) =>
-        listingFiles.append("assessments", file)
-      );
-    }
-    console.log(values.teamContact.assessmentData);
+    // let listingFiles = new FormData();
+    // if (values.teamContact.assessmentData) {
+    //   values.teamContact.assessmentData.forEach((file) =>
+    //     listingFiles.append("assessments", file)
+    //   );
+    // }
+    // console.log(values.teamContact.assessmentData);
     const listing = await addListingSubmission({
       ...values,
       teamContact: {
@@ -94,18 +92,18 @@ export default function Page() {
           "Got some error while processing your request. Please try again.",
       });
     }
-    console.log(Object.entries(listingFiles));
-    const filesSaved = await uploadListingSubmissionFiles(
-      listing.id,
-      listingFiles
-    );
-    if (!filesSaved) {
-      return toast({
-        variant: "destructive",
-        title:
-          "Got some error while processing your request. Please try again.",
-      });
-    }
+    // console.log(Object.entries(listingFiles));
+    // const filesSaved = await uploadListingSubmissionFiles(
+    //   listing.id,
+    //   listingFiles
+    // );
+    // if (!filesSaved) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title:
+    //       "Got some error while processing your request. Please try again.",
+    //   });
+    // }
     router.replace("/");
   };
   return (

@@ -42,6 +42,7 @@
     "nodemailer": "^6.9.7",
     "query-string": "^8.1.0",
     "react": "^18",
+    "react-calendar": "^4.6.1",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",

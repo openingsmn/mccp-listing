@@ -34,6 +34,7 @@ export const useListingStore = create<UseListingStore>((set, get) => ({
     get().loadListingData();
   },
   async loadListingData() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     set((state) => ({
       ...state,
       loadingData: true,

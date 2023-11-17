@@ -1,7 +1,6 @@
 "use server";
 import { ListingSubmissionSchema } from "@/shared/validation/listing.z";
 import db from "../db";
-import { saveFileToLocal } from "../files-handler";
 import { IListingSubmission } from "@/typing/db";
 import { sendListingEmail } from "../mailer";
 
@@ -89,7 +88,7 @@ export default async function addListingSubmission(
       },
     });
     // Sending Email to user who submitted form
-    if (data.email) {
+    if (data.email && data.email !== "") {
       await sendListingEmail(submissionData as IListingSubmission);
     }
     return submissionData;
@@ -98,44 +97,44 @@ export default async function addListingSubmission(
   }
 }
 
-export async function uploadListingSubmissionFiles(
-  listingId: string,
-  data: FormData
-) {
-  // Saving Assessment Atachements
-  try {
-    const assessmentFiles =
-      (data.getAll("assessments") as File[] | undefined) ?? [];
-    const savedAssFiles: Array<string> = [];
-    await Promise.all(
-      assessmentFiles.map(async (file) => {
-        const filePath = await saveFileToLocal("assessments", file, listingId);
-        if (filePath) savedAssFiles.push(filePath);
-        return filePath;
-      })
-    );
-    if (savedAssFiles.length > 0) {
-      const listing = await db.teamContact.update({
-        where: {
-          submissionId: listingId,
-        },
-        data: {
-          assessmentFiles: {
-            createMany: {
-              skipDuplicates: true,
-              data: savedAssFiles.map((filePath) => ({
-                localUrl: filePath,
-                publicUrl: `${SITE_URL}/${filePath}`,
-              })),
-            },
-          },
-        },
-      });
-      console.log(listing);
-    }
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-}
+// export async function uploadListingSubmissionFiles(
+//   listingId: string,
+//   data: FormData
+// ) {
+//   // Saving Assessment Atachements
+//   try {
+//     const assessmentFiles =
+//       (data.getAll("assessments") as File[] | undefined) ?? [];
+//     const savedAssFiles: Array<string> = [];
+//     await Promise.all(
+//       assessmentFiles.map(async (file) => {
+//         const filePath = await saveFileToLocal("assessments", file, listingId);
+//         if (filePath) savedAssFiles.push(filePath);
+//         return filePath;
+//       })
+//     );
+//     if (savedAssFiles.length > 0) {
+//       const listing = await db.teamContact.update({
+//         where: {
+//           submissionId: listingId,
+//         },
+//         data: {
+//           assessmentFiles: {
+//             createMany: {
+//               skipDuplicates: true,
+//               data: savedAssFiles.map((filePath) => ({
+//                 localUrl: filePath,
+//                 publicUrl: `${SITE_URL}/${filePath}`,
+//               })),
+//             },
+//           },
+//         },
+//       });
+//       console.log(listing);
+//     }
+//     return true;
+//   } catch (error) {
+//     console.log(error);
+//     return false;
+//   }
+// }

@@ -40,7 +40,7 @@ export const useListingStore = create<UseListingStore>((set, get) => ({
       listingData: null,
       filters: {
         ...state.filters,
-        page: 1,
+        // page: 1,
       },
     }));
     // const queryString = Object.entries(get().filters)
@@ -65,7 +65,10 @@ export const useListingStore = create<UseListingStore>((set, get) => ({
         listingData: res.data,
         filters: {
           ...state.filters,
-          page: 1,
+          page:
+            (res.data.data?.length || 0) > 0
+              ? res.data.pagination?.page || 1
+              : 1,
         },
       }));
     }

@@ -16,9 +16,11 @@ export default function Page() {
             <span className="font-sans">OPENINGS</span>
           </h2>
           <p className="mt-2 text-lg text-white max-w-[486px] tracking-[1px]">
-            MCCP provides up-to-date openings for clients on CADI, BI, EW
-            waivers looking to move into Customized Living/Assisted Living
-            Facilities
+            Discover a variety of housing options tailored to your clients needs 
+            with MCCP. We provide up-to-date openings for clients on 
+            CADI, BI, EW waivers, including but not limited to Customized 
+            Living/Assisted Living Facilities, CRS, Foster Care, etc. 
+            Explore a diverse range of options in our comprehensive listings.
             {/* MCCP provides timely assistance to address behavioral concerns in
             the lives of people with Intellectual Disabilities and Mental Health
             issues. Assessment, strategies, trainings, crisis homes and more */}

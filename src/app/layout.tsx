@@ -1,9 +1,9 @@
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Alkatra, Bebas_Neue, Poppins } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import Header from "./header";
-import { cn } from "@/lib/utils";
 
 // const inter = Inter({ subsets: ["latin"] });
 const alkatra = Alkatra({ subsets: ["latin"] });

@@ -11,8 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "prisma db push && prisma db seed",
-    "migrate -f": "prisma db push --force-reset && prisma db seed",
+    "migrate": "prisma db push --force-reset && prisma db seed",
     "postinstall": "npm run migrate"
   },
   "dependencies": {

@@ -80,6 +80,15 @@ export default function generateEmailTemplate(
           <div class="forminfo" style="margin-top: 20px;">
             <div class="miflex">
               <div class="label">
+                <h3>House</h3>
+              </div>
+              <div class="values">
+                <p>${submisionData.housingProfile?.address || ""}</p>
+                <p>${submisionData.housingProfile?.provider || ""}</p>
+              </div>
+            </div>
+            <div class="miflex">
+              <div class="label">
                 <h3>Type Of Waiver</h3>
               </div>
               <div class="values"><p>${submisionData.waiverType}</p></div>

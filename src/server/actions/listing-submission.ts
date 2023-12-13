@@ -8,6 +8,7 @@ const SITE_URL = process.env.SITE_URL ?? "";
 const RECEIVER_EMAIL = process.env.MAILER_TO_EMAIL;
 
 export default async function addListingSubmission(
+  housingProfileId: number,
   data: ListingSubmissionSchema
 ) {
   console.log(data.residentialOpenings);
@@ -15,6 +16,11 @@ export default async function addListingSubmission(
     // Saving Data into Database
     const submissionData = await db.listingSubmission.create({
       data: {
+        housingProfile: {
+          connect: {
+            id: housingProfileId,
+          },
+        },
         email: data.email,
         fullName: data.fullName,
         dateOfBirth: data.dateOfBirth,
@@ -86,6 +92,7 @@ export default async function addListingSubmission(
           },
         },
         residentialOpenings: true,
+        housingProfile: true,
       },
     });
     await sendListingEmail(submissionData as IListingSubmission);

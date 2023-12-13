@@ -1,5 +1,6 @@
 import {
   Address,
+  HousingProfile,
   ListingSubmission,
   Mobility,
   ResidntialOpening,
@@ -23,4 +24,5 @@ type IListingSubmission = ListingSubmission & {
   mobility?: IMobility;
   teamContact?: ITeamContact;
   residentialOpenings?: ResidntialOpening;
+  housingProfile?: HousingProfile;
 };

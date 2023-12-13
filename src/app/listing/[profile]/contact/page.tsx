@@ -19,7 +19,6 @@ import {
 } from "@/shared/validation/listing.z";
 import { SelectEl } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { UploadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/spinner";
 import addListingSubmission from "@/server/actions/listing-submission";
@@ -27,15 +26,22 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { CheckboxGroupEl } from "@/components/ui/checkbox";
 import Image from "next/image";
+import { useEffect } from "react";
 
-export default function Page() {
+export default function Page({ params }: { params: { profile: string } }) {
   const router = useRouter();
   const form = useForm<ListingSubmissionSchema>({
     resolver: zodResolver(listingSubmissionSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     shouldFocusError: true,
   });
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isNaN(parseInt(params.profile))) {
+      router.back();
+    }
+  }, [params.profile, router]);
 
   // Check if mobility concerns is "Yes" so we can make required it's related fields
   const mobilityConcers =
@@ -78,7 +84,7 @@ export default function Page() {
     //   );
     // }
     // console.log(values.teamContact.assessmentData);
-    const listing = await addListingSubmission({
+    const listing = await addListingSubmission(Number(params.profile), {
       ...values,
       teamContact: {
         ...values.teamContact,
@@ -318,7 +324,7 @@ export default function Page() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel required>Phone Number</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -331,7 +337,7 @@ export default function Page() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email Address</FormLabel>
+                      <FormLabel required>Email Address</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>

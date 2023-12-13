@@ -12,25 +12,26 @@ datasource db {
 }
 
 model HousingProfile {
-  id                     Int      @id @default(autoincrement())
-  bedroomLocation        String   @db.Text
-  beds                   String   @db.Text
-  nursingSupport         String   @db.Text
-  overnightSupervision   String   @db.Text
-  phone                  String   @db.Text
-  physicalAccommodations String   @db.MediumText
-  housingType            String   @db.Text
-  fundingType            String   @db.Text
+  id                     Int                 @id @default(autoincrement())
+  bedroomLocation        String              @db.Text
+  beds                   String              @db.Text
+  nursingSupport         String              @db.Text
+  overnightSupervision   String              @db.Text
+  phone                  String              @db.Text
+  physicalAccommodations String              @db.MediumText
+  housingType            String              @db.Text
+  fundingType            String              @db.Text
   // intellectualDisability String?  @db.Text
-  staffingPattern        String   @db.Text
-  challengingBehaviours  String   @db.Text
-  providerId             Int      @db.Int
-  provider               String   @db.Text
-  state                  String   @db.Text
-  address                String   @db.LongText
-  city                   String   @db.Text
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @default(now()) @updatedAt
+  staffingPattern        String              @db.Text
+  challengingBehaviours  String              @db.Text
+  providerId             Int                 @db.Int
+  provider               String              @db.Text
+  state                  String              @db.Text
+  address                String              @db.LongText
+  city                   String              @db.Text
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @default(now()) @updatedAt
+  submissions            ListingSubmission[]
 }
 
 model ListingSubmission {
@@ -54,6 +55,8 @@ model ListingSubmission {
   teamContact         TeamContact?
   address             Address?
   residentialOpenings ResidntialOpening?
+  housingProfile      HousingProfile     @relation(fields: [housingProfileId], references: [id])
+  housingProfileId    Int
 }
 
 model ResidntialOpening {

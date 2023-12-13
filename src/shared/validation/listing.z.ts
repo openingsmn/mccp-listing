@@ -54,8 +54,10 @@ export const listingSubmissionSchema = z.object({
   dateOfBirth: z.date(),
   pmiNumber: z.string({ required_error: "Field Required!" }),
   address: addressSchema.partial().optional(),
-  phone: z.string({ required_error: "Field Required!" }).optional(),
-  email: z.string({ required_error: "Field Required!" }).optional(),
+  phone: z.string({ required_error: "Field Required!" }),
+  email: z
+    .string({ required_error: "Field Required!" })
+    .email({ message: "Please enter a valid email address." }),
   relegiousPref: z.string({ required_error: "Field Required!" }).optional(),
   gender: z.string({ required_error: "Field Required!" }).optional(),
   race: z.string({ required_error: "Field Required!" }).optional(),

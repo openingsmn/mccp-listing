@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <section className="home-screen min-h-screen flex items-center relative">
       <div className="px-10 md:mt-20">
-        <p className="text-primary">
+        <p className="text-lg text-primary tracking-wider">
           We match with homes that might be a good fit.
         </p>
         <h2 className="text-5xl md:text-8xl text-white">
@@ -52,7 +52,9 @@ const Hero = () => {
         </div>
 
         <div className="mt-10">
-          <p className="text-white">76% placement rate through MCCPOpenings</p>
+          <p className="text-lg text-white tracking-wider">
+            76% placement rate through MCCPOpenings
+          </p>
         </div>
       </div>
     </section>

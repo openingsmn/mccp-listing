@@ -1,6 +1,6 @@
 const formConfig = {
   waiverType: {
-    label: "Type of Waiver",
+    label: "DD waiver",
     values: ["CADI Waiver", "BI Waiver", "Elderly Waiver", "Private Pay"],
   },
   waiverTypeSpecific: {

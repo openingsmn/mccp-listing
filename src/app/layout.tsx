@@ -30,16 +30,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          alkatra.className,
-          bebas.variable,
-          poppins.variable,
-          "bg-white min-h-screen"
-        )}
-      >
+      <body className={cn(alkatra.className, bebas.variable, poppins.variable)}>
         <Header />
-        <div className="pt-[90px]">{children}</div>
+        <main>{children}</main>
         <Toaster />
       </body>
     </html>

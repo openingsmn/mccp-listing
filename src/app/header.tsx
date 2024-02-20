@@ -38,9 +38,8 @@ export default function Header() {
   }, []);
   return (
     <header
-      // py-[20px]
       className={cn(
-        "w-full fixed top-0 left-0 h-[90px] px-10  bg-[#FAFCF7] border-b z-50",
+        "w-full fixed top-0 h-16 px-4 md:px-10 bg-[#FAFCF7] border-b z-50",
         scrollY > 100 && "shadow-xl"
       )}
     >

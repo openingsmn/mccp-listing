@@ -1,4 +1,6 @@
 "use client";
+import Spinner from "@/components/spinner";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormCalendar,
@@ -10,23 +12,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroupEl } from "@/components/ui/radio-group";
+import { SelectEl } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 import formConfig from "@/config/form.cfg";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import addListingSubmission from "@/server/actions/listing-submission";
 import {
   listingSubmissionSchema,
   type ListingSubmissionSchema,
 } from "@/shared/validation/listing.z";
-import { SelectEl } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import Spinner from "@/components/spinner";
-import addListingSubmission from "@/server/actions/listing-submission";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { CheckboxGroupEl } from "@/components/ui/checkbox";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Page({ params }: { params: { profile: string } }) {
   const router = useRouter();
@@ -230,7 +228,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="fullName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Full Name</FormLabel>
+                      <FormLabel required>Full Name or Initials</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -243,7 +241,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="dateOfBirth"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Date of Birth</FormLabel>
+                      <FormLabel>Date of Birth</FormLabel>
                       <FormControl>
                         <FormCalendar
                           value={field.value}
@@ -259,7 +257,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="pmiNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>PMI Number</FormLabel>
+                      <FormLabel>PMI Number</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -268,7 +266,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   )}
                 />
                 {/* Address Section Start */}
-                <div>
+                {/* <div>
                   <div>
                     <Label className="text-xl font-bold">Address</Label>
                   </div>
@@ -317,14 +315,14 @@ export default function Page({ params }: { params: { profile: string } }) {
                       )}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* Address Section End */}
                 <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Phone Number</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -337,7 +335,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Email Address</FormLabel>
+                      <FormLabel>Email Address</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -345,7 +343,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="relegiousPref"
                   render={({ field }) => (
@@ -370,8 +368,8 @@ export default function Page({ params }: { params: { profile: string } }) {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
-                <FormField
+                /> */}
+                {/* <FormField
                   control={form.control}
                   name="race"
                   render={({ field }) => (
@@ -383,7 +381,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 <FormField
                   control={form.control}

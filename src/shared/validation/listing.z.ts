@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { File } from "@web-std/file";
+import { z } from "zod";
 
 const residentialOpeningsSchema = z.object({
   accessible55P: z
@@ -18,10 +18,16 @@ const residentialOpeningsSchema = z.object({
     .array(z.string({ required_error: "Field Required!" }))
     .optional(),
 });
+
 const addressSchema = z.object({
   fullAddress: z.string({ required_error: "Field Required!" }),
   city: z.string({ required_error: "Field Required!" }),
   postalCode: z.string({ required_error: "Field Required!" }),
+  phone: z.string({ required_error: "Field Required!" }).optional(), // Made optional as per request
+  email: z
+    .string({ required_error: "Field Required!" })
+    .email({ message: "Please enter a valid email address." })
+    .optional(), // Made optional as per request
 });
 
 const mobilitySchema = z.object({
@@ -31,6 +37,7 @@ const mobilitySchema = z.object({
     .optional(),
   adjustWithOneFloor: z.string().optional(),
 });
+
 const teamContactSchema = z.object({
   caseManager: z.string({ required_error: "Field Required!" }),
   referrer: z.string({ required_error: "Field Required!" }).optional(),
@@ -51,13 +58,14 @@ export const listingSubmissionSchema = z.object({
   timeframe: z.string({ required_error: "Field Required!" }),
   housingType: z.string({ required_error: "Field Required!" }),
   fullName: z.string({ required_error: "Field Required!" }),
-  dateOfBirth: z.date(),
-  pmiNumber: z.string({ required_error: "Field Required!" }),
+  dateOfBirth: z.date().optional(), // Made optional as per request
+  pmiNumber: z.string({ required_error: "Field Required!" }).optional(), // Made optional as per request
   address: addressSchema.partial().optional(),
-  phone: z.string({ required_error: "Field Required!" }),
+  phone: z.string({ required_error: "Field Required!" }).optional(), // This should remain under addressSchema but adjusted for demonstration
   email: z
     .string({ required_error: "Field Required!" })
-    .email({ message: "Please enter a valid email address." }),
+    .email({ message: "Please enter a valid email address." })
+    .optional(), // This should remain under addressSchema but adjusted for demonstration
   relegiousPref: z.string({ required_error: "Field Required!" }).optional(),
   gender: z.string({ required_error: "Field Required!" }).optional(),
   race: z.string({ required_error: "Field Required!" }).optional(),

@@ -67,7 +67,7 @@ const formConfig = {
       },
       usedMobilityDevices: {
         label:
-          "Does this person use OR could they use any of the following to assist with mobility/accessibility? (Cane, Walker, Wheelchair, Scooter, Chair lift for stairs, Hoyer Lift) If yest please list what is used below.",
+          "Does this person use OR could they use any of the following to assist with mobility/accessibility? (Cane, Walker, Wheelchair, Scooter, Chair lift for stairs, Hoyer Lift) If yes please list what is used below.",
       },
       adjustWithOneFloor: {
         label:

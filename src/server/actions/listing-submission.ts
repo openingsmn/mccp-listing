@@ -1,7 +1,7 @@
 "use server";
 import { ListingSubmissionSchema } from "@/shared/validation/listing.z";
-import db from "../db";
 import { IListingSubmission } from "@/typing/db";
+import db from "../db";
 import { sendListingEmail } from "../mailer";
 
 const SITE_URL = process.env.SITE_URL ?? "";
@@ -23,14 +23,14 @@ export default async function addListingSubmission(
         },
         email: data.email,
         fullName: data.fullName,
-        dateOfBirth: data.dateOfBirth,
+        dateOfBirth: data.dateOfBirth || "",
         equipementsNeeded: data.equipementsNeeded,
         gender: data.gender,
         guardianStatus: data.guardianStatus,
         housingType: data.housingType,
         livingSituation: data.livingSituation,
         phone: data.phone,
-        pmiNumber: data.pmiNumber,
+        pmiNumber: data.pmiNumber || "",
         race: data.race,
         relegiousPref: data.relegiousPref,
         timeframe: data.timeframe,

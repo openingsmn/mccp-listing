@@ -89,13 +89,13 @@ export default function Page({ params }: { params: { profile: string } }) {
         assessmentData: [],
       },
     });
-    // if (!listing) {
-    //   return toast({
-    //     variant: "destructive",
-    //     title:
-    //       "Got some error while processing your request. Please try again.",
-    //   });
-    // }
+    if (!listing) {
+      return toast({
+        variant: "destructive",
+        title:
+          "Got some error while processing your request. Please try again.",
+      });
+    }
     // console.log(Object.entries(listingFiles));
     // const filesSaved = await uploadListingSubmissionFiles(
     //   listing.id,

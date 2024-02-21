@@ -30,12 +30,12 @@ const Hero = () => {
             href="/listing"
             className={cn(
               buttonVariants({
-                className: "w-full h-16 text-white text-base",
+                className: "w-full py-8 px-10 text-white text-base",
               })
             )}
           >
             See All Listing
-            <ArrowRightIcon className="w-6 h-6 ml-10" />
+            <ArrowRightIcon className="w-6 h-6 ml-4" />
           </Link>
 
           <div>
@@ -43,12 +43,12 @@ const Hero = () => {
               href="/listing/202/contact"
               className={cn(
                 buttonVariants({
-                  className: "w-full h-16 text-white text-base",
+                  className: "w-full py-8 px-10 text-white text-base",
                 })
               )}
             >
               Fill out referral form
-              <ArrowRightIcon className="w-6 h-6 ml-10" />
+              <ArrowRightIcon className="w-6 h-6 ml-4" />
             </Link>
           </div>
         </div>

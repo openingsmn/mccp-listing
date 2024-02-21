@@ -1,6 +1,5 @@
 "use client";
 import { useListingStore } from "@/components/hooks/stores/useListing";
-import { Button } from "@/components/ui/button";
 import { CheckboxGroupEl } from "@/components/ui/checkbox";
 import {
   Form,
@@ -9,10 +8,8 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { RadioGroupEl } from "@/components/ui/radio-group";
 import { ListingFiltersSchema } from "@/shared/validation/listing.z";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 
 const filtersData = [

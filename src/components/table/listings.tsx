@@ -1,17 +1,15 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import { HousingProfile } from "@prisma/client";
-import { DataTableColumnHeader } from "./basic/table";
-import { perPageCountOptions } from "./basic/pagination";
 import { PaginationProps } from "@/typing/pagination";
-import { PaginatedApiResponse } from "@/typing/api";
-import DataTable from "./basic";
-import axios from "axios";
+import { HousingProfile } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useListingStore } from "../hooks/stores/useListing";
+import { Button } from "../ui/button";
+import DataTable from "./basic";
+import { DataTableColumnHeader } from "./basic/table";
 
 const tableColumns: ColumnDef<HousingProfile>[] = [
   // {
@@ -98,6 +96,20 @@ const tableColumns: ColumnDef<HousingProfile>[] = [
           >
             {format(new Date(row.original.updatedAt), "PP")}
           </span>
+        </div>
+      );
+    },
+  },
+  {
+    id: "Refer",
+    accessorFn: (row) => format(new Date(row.updatedAt), "PPP"),
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Refer" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex  space-x-2">
+          <Button className="text-white">Click to Refer</Button>
         </div>
       );
     },

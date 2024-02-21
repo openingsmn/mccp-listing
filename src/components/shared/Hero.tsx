@@ -7,9 +7,6 @@ const Hero = () => {
   return (
     <section className="home-screen min-h-screen flex items-center relative">
       <div className="px-10 md:mt-20">
-        <p className="text-lg text-primary tracking-wider">
-          We match with homes that might be a good fit.
-        </p>
         <h2 className="text-5xl md:text-8xl text-white">
           <span className="font-sans">SEARCH FOR</span>
           <br />
@@ -33,25 +30,36 @@ const Hero = () => {
             href="/listing"
             className={cn(
               buttonVariants({
-                className: "w-full h-16 text-white text-base",
+                className: "w-full py-8 px-10 text-white text-base",
               })
             )}
           >
             See All Listing
-            <ArrowRightIcon className="w-6 h-6 ml-10" />
+            <ArrowRightIcon className="w-6 h-6 ml-4" />
           </Link>
-          <Link
-            href="/listing/202/contact"
-            className={cn(
-              buttonVariants({ className: "w-full h-16 text-white text-base" })
-            )}
-          >
-            Fill out referral form
-            <ArrowRightIcon className="w-6 h-6 ml-10" />
-          </Link>
+
+          <div>
+            <Link
+              href="/listing/202/contact"
+              className={cn(
+                buttonVariants({
+                  className: "w-full py-8 px-10 text-white text-base",
+                })
+              )}
+            >
+              Fill out referral form
+              <ArrowRightIcon className="w-6 h-6 ml-4" />
+            </Link>
+          </div>
+        </div>
+        <div>
+          <p className="text-white text-end mt-2">It takes 2 minutes</p>
         </div>
 
         <div className="mt-10">
+          <p className="text-lg text-primary tracking-wider">
+            We match with homes that might be a good fit.
+          </p>
           <p className="text-lg text-white tracking-wider">
             76% placement rate through MCCPOpenings
           </p>

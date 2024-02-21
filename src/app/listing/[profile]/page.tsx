@@ -24,10 +24,10 @@ export default async function Page({
             href={`/listing/${profile.id}/contact`}
             className={cn(
               "text-base font-poppins text-white focus-visible:outline-none",
-              "bg-primary py-[10px] px-[26px] uppercase block"
+              "bg-primary py-[10px] px-[26px] block"
             )}
           >
-            Email Housing Contact
+            Send Referral
           </Link>
         </div>
         <div className="">

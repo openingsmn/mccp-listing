@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
 import {
-  Table as TTable,
+  Column,
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  Table as TTable,
   VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -15,8 +15,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  Column,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import {
   Table,
@@ -27,7 +27,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTablePagination } from "./pagination";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -35,6 +34,7 @@ import {
   EyeNoneIcon,
   MixerHorizontalIcon,
 } from "@radix-ui/react-icons";
+import { DataTablePagination } from "./pagination";
 
 import { Button } from "@/components/ui/button";
 
@@ -47,10 +47,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import Spinner from "@/components/ui/spinner";
-import { DataTableToolbar, ToolbarProps } from "./toolbar";
+import { cn } from "@/lib/utils";
 import { PaginationProps } from "@/typing/pagination";
+import { ToolbarProps } from "./toolbar";
 
 interface DataTableProps<TData, TValue> extends ToolbarProps<TData> {
   columns: ColumnDef<TData, TValue>[];
@@ -105,7 +105,7 @@ export function BaseTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full">
+    <div>
       {/* {showToolbar && (
         <DataTableToolbar
           table={table}
@@ -114,14 +114,14 @@ export function BaseTable<TData, TValue>({
           setFilterValue={setGlobalFilter}
         />
       )} */}
-      <div className="borde">
+      <div className="w-full">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

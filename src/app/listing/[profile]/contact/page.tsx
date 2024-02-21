@@ -155,7 +155,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="waiverType.specific"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>Specific Option</FormLabel>
+                      <FormLabel>Specific Option</FormLabel>
                       <FormControl>
                         <SelectEl
                           value={field.value}
@@ -257,7 +257,7 @@ export default function Page({ params }: { params: { profile: string } }) {
                   name="pmiNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel required>PMI Number</FormLabel>
+                      <FormLabel>PMI Number</FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>

@@ -19,9 +19,9 @@ const residentialOpeningsSchema = z.object({
     .optional(),
 });
 const addressSchema = z.object({
-  fullAddress: z.string({ required_error: "Field Required!" }),
-  city: z.string({ required_error: "Field Required!" }),
-  postalCode: z.string({ required_error: "Field Required!" }),
+  fullAddress: z.string({ required_error: "Field Required!" }).optional(),
+  city: z.string({ required_error: "Field Required!" }).optional(),
+  postalCode: z.string({ required_error: "Field Required!" }).optional(),
 });
 
 const mobilitySchema = z.object({
@@ -32,7 +32,9 @@ const mobilitySchema = z.object({
   adjustWithOneFloor: z.string().optional(),
 });
 const teamContactSchema = z.object({
-  caseManager: z.string({ required_error: "Field Required!" }),
+  caseManager: z
+    .string({ required_error: "Field Required!" })
+    .refine((value) => value.trim().length > 0, { message: "Field Required!" }),
   referrer: z.string({ required_error: "Field Required!" }).optional(),
   legalRepresentative: z
     .string({ required_error: "Field Required!" })
@@ -46,22 +48,47 @@ const teamContactSchema = z.object({
 export const listingSubmissionSchema = z.object({
   waiverType: z.object({
     general: z.string({ required_error: "Field Required!" }),
-    specific: z.string({ required_error: "Field Required!" }),
+    specific: z.string({ required_error: "Field Required!" }).optional(),
   }),
   timeframe: z.string({ required_error: "Field Required!" }),
   housingType: z.string({ required_error: "Field Required!" }),
-  fullName: z.string({ required_error: "Field Required!" }),
-  dateOfBirth: z.date(),
-  pmiNumber: z.string(),
+  fullName: z
+    .string({
+      required_error: "Field Required!",
+    })
+    .refine((value) => value.trim().length > 0, {
+      message: "Field Required!",
+    })
+    .refine((value) => /^[A-Za-z\s]+$/.test(value), {
+      message: "Only letters and spaces are allowed in the name field",
+    }),
+  dateOfBirth: z.date().optional(),
+  pmiNumber: z.string().optional(),
   address: addressSchema.partial().optional(),
-  phone: z.string({ required_error: "Field Required!" }).optional(),
+  phone: z
+    .string()
+    .refine(
+      (value) => {
+        // Define a regular expression for a basic phone number pattern
+        const phoneRegex = /^\+?[0-9]*\(?[0-9]*\)?[0-9\- ]*$/;
+        return !value || phoneRegex.test(value); // Make it pass if the value is empty or matches the pattern
+      },
+      {
+        message:
+          "Alphabet characters are not allowed in the phone number field.",
+      }
+    )
+    .optional(),
   email: z
     .string({ required_error: "Field Required!" })
-    .email({ message: "Please enter a valid email address." }),
+    .email({ message: "Please enter a valid email address." })
+    .optional(),
   relegiousPref: z.string({ required_error: "Field Required!" }).optional(),
   gender: z.string({ required_error: "Field Required!" }).optional(),
   race: z.string({ required_error: "Field Required!" }).optional(),
-  equipementsNeeded: z.string({ required_error: "Field Required!" }),
+  equipementsNeeded: z
+    .string({ required_error: "Field Required!" })
+    .refine((value) => value.trim().length > 0, { message: "Field Required!" }),
   guardianStatus: z.string({ required_error: "Field Required!" }),
   livingSituation: z.string({ required_error: "Field Required!" }),
   mobility: mobilitySchema,

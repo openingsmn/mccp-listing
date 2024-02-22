@@ -48,7 +48,7 @@ const teamContactSchema = z.object({
 export const listingSubmissionSchema = z.object({
   waiverType: z.object({
     general: z.string({ required_error: "Field Required!" }),
-    specific: z.string({ required_error: "Field Required!" }).optional(),
+    specific: z.string({ required_error: "Field Required!" }),
   }),
   timeframe: z.string({ required_error: "Field Required!" }),
   housingType: z.string({ required_error: "Field Required!" }),
@@ -80,11 +80,11 @@ export const listingSubmissionSchema = z.object({
     )
     .optional(),
   email: z
-    .string({ required_error: "Field Required!" })
+    .string()
     .email({ message: "Please enter a valid email address." })
     .optional(),
   relegiousPref: z.string({ required_error: "Field Required!" }).optional(),
-  gender: z.string({ required_error: "Field Required!" }).optional(),
+  gender: z.string().optional(),
   race: z.string({ required_error: "Field Required!" }).optional(),
   equipementsNeeded: z
     .string({ required_error: "Field Required!" })
